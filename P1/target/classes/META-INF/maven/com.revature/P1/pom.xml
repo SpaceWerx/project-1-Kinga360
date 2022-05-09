@@ -3,4 +3,18 @@
   <groupId>com.revature</groupId>
   <artifactId>P1</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+   <properties>
+ 	 <mavin.compiler.source>1.8</mavin.compiler.source>
+  	 <mavin.compiler.target>1.8</mavin.compiler.target>
+  </properties>
+  <dependencies>
+	<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+	<dependency>
+	    <groupId>org.junit.jupiter</groupId>
+	    <artifactId>junit-jupiter-api</artifactId>
+	    <version>5.8.2</version>
+	    <scope>test</scope>
+	</dependency>
+</dependencies>
+
 </project>
