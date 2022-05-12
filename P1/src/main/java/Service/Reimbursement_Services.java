@@ -3,6 +3,7 @@ import java.util.*;
 import Models.*;
 
 public class Reimbursement_Services {
+	private ArrayList<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
 	public void update(Reimbursement unprocessedReimbursement, int resolverId, Status UpdateStatus) {
 		for (Reimbursement reimbursement : reimbursements) {
 		if (reimbursement.getID() == unprocessedReimbursement.getID()) {
@@ -14,14 +15,20 @@ public class Reimbursement_Services {
 		throw new RuntimeException("There was an error processing this reimbursement, please try again");
 	}
 	public void submitReimbursement (Reimbursement reimbursementToBeSubmitted) {
-		Reimbursement latestReimbursement = Reimbursement.get(reimbursements.size() -1);
+		Reimbursement latestReimbursement;
 		
-		int id = latestReimbursement.getID() + 1; //New ID is 1 higher than the highest
+			latestReimbursement = reimbursements.get(reimbursements.size() -1);
+			int id = latestReimbursement.getID() + 1; //New ID is 1 higher than the highest
+			
+			reimbursementToBeSubmitted.setID(id);
+			reimbursementToBeSubmitted.setStatus(Status.Pending);
+			reimbursements.add(reimbursementToBeSubmitted);
 		
-		reimbursementToBeSubmitted.setID(id);
-		reimbursementToBeSubmitted.setStatus(Status.Pending);
-		reimbursements.add(reimbursementToBeSubmitted);
+			
 		}
+		
+		
+		
 	public List<Reimbursement> getResolvedReimbursements(){
 		List <Reimbursement> resolvedReimbursements = new ArrayList<>();
 		

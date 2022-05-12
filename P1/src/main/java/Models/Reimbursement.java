@@ -1,6 +1,6 @@
 package Models;
 
-import java.util.Objects;
+import java.util.*;
 
 public class Reimbursement {
 	private int ID;
@@ -10,6 +10,7 @@ public class Reimbursement {
 	private Type type;
 	private Status status;
 	private double amount;
+	
 	public Reimbursement() {
 		super();
 		// TODO Auto-generated constructor stub
