@@ -1,5 +1,7 @@
 package Models;
 
+import java.util.Objects;
+
 public class Users {
 	private String userName;
 	private String Password;
@@ -35,13 +37,7 @@ public class Users {
 	}
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ID;
-		result = prime * result + ((Password == null) ? 0 : Password.hashCode());
-		result = prime * result + ((role == null) ? 0 : role.hashCode());
-		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
-		return result;
+		return Objects.hash(ID, Password, role, userName);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -52,21 +48,8 @@ public class Users {
 		if (getClass() != obj.getClass())
 			return false;
 		Users other = (Users) obj;
-		if (ID != other.ID)
-			return false;
-		if (Password == null) {
-			if (other.Password != null)
-				return false;
-		} else if (!Password.equals(other.Password))
-			return false;
-		if (role != other.role)
-			return false;
-		if (userName == null) {
-			if (other.userName != null)
-				return false;
-		} else if (!userName.equals(other.userName))
-			return false;
-		return true;
+		return ID == other.ID && Objects.equals(Password, other.Password) && role == other.role
+				&& Objects.equals(userName, other.userName);
 	}
 	@Override
 	public String toString() {

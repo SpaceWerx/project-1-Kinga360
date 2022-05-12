@@ -1,5 +1,7 @@
 package Models;
 
+import java.util.Objects;
+
 public class Reimbursement {
 	private int ID;
 	private String author;
@@ -56,18 +58,7 @@ public class Reimbursement {
 	}
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((Description == null) ? 0 : Description.hashCode());
-		result = prime * result + ID;
-		long temp;
-		temp = Double.doubleToLongBits(amount);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((author == null) ? 0 : author.hashCode());
-		result = prime * result + ((resolver == null) ? 0 : resolver.hashCode());
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		return result;
+		return Objects.hash(Description, ID, amount, author, resolver, status, type);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -78,30 +69,10 @@ public class Reimbursement {
 		if (getClass() != obj.getClass())
 			return false;
 		Reimbursement other = (Reimbursement) obj;
-		if (Description == null) {
-			if (other.Description != null)
-				return false;
-		} else if (!Description.equals(other.Description))
-			return false;
-		if (ID != other.ID)
-			return false;
-		if (Double.doubleToLongBits(amount) != Double.doubleToLongBits(other.amount))
-			return false;
-		if (author == null) {
-			if (other.author != null)
-				return false;
-		} else if (!author.equals(other.author))
-			return false;
-		if (resolver == null) {
-			if (other.resolver != null)
-				return false;
-		} else if (!resolver.equals(other.resolver))
-			return false;
-		if (status != other.status)
-			return false;
-		if (type != other.type)
-			return false;
-		return true;
+		return Objects.equals(Description, other.Description) && ID == other.ID
+				&& Double.doubleToLongBits(amount) == Double.doubleToLongBits(other.amount)
+				&& Objects.equals(author, other.author) && Objects.equals(resolver, other.resolver)
+				&& status == other.status && type == other.type;
 	}
 	@Override
 	public String toString() {
