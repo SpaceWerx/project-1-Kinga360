@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class Reimbursement {
 	private int ID;
-	private String author;
-	private String resolver;
+	private int author;
+	private int resolver;
 	private String Description;
 	private Type type;
 	private Status status;
@@ -20,16 +20,16 @@ public class Reimbursement {
 	public void setID(int iD) {
 		ID = iD;
 	}
-	public String getAuthor() {
+	public int getAuthor() {
 		return author;
 	}
-	public void setAuthor(String author) {
+	public void setAuthor(int author) {
 		this.author = author;
 	}
-	public String getResolver() {
+	public int getResolver() {
 		return resolver;
 	}
-	public void setResolver(String resolver) {
+	public void setResolver(int resolver) {
 		this.resolver = resolver;
 	}
 	public String getDescription() {
@@ -70,9 +70,8 @@ public class Reimbursement {
 			return false;
 		Reimbursement other = (Reimbursement) obj;
 		return Objects.equals(Description, other.Description) && ID == other.ID
-				&& Double.doubleToLongBits(amount) == Double.doubleToLongBits(other.amount)
-				&& Objects.equals(author, other.author) && Objects.equals(resolver, other.resolver)
-				&& status == other.status && type == other.type;
+				&& Double.doubleToLongBits(amount) == Double.doubleToLongBits(other.amount) && author == other.author
+				&& resolver == other.resolver && status == other.status && type == other.type;
 	}
 	@Override
 	public String toString() {
