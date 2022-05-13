@@ -11,6 +11,16 @@ public class Reimbursement {
 	private Status status;
 	private double amount;
 	
+	public Reimbursement(int id, int author, int resolver, String description, Type type, Status status, double amount) {
+		setID(id);
+		setAuthor(this.author);
+		setResolver(this.resolver);
+		setDescription(description);
+		setType(this.type);
+		setStatus(this.status);
+		setAmount(this.amount);
+		
+	}
 	public Reimbursement() {
 		super();
 		// TODO Auto-generated constructor stub

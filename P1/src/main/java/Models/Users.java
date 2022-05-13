@@ -31,6 +31,12 @@ public class Users {
 	public void setRole(Roles role) {
 		this.role = role;
 	}
+	public Users(int id, String username, String password, Roles role) {
+		setID(id);
+		setUserName(username);
+		setPassword(password);
+		setRole(role);
+	}
 	public Users() {
 		super();
 		// TODO Auto-generated constructor stub
