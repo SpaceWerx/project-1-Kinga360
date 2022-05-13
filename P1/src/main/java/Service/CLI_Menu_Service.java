@@ -141,6 +141,37 @@ public class CLI_Menu_Service {
 				ids[i] = r.getID();
 			}
 			System.out.println("Please enter the ID of the Reimbursement you wish to process.");
+			
+			int selection= (promptSelection(ids)); 
+			Reimbursement reimbursementToBeProcessed = Reimbursement_Services.getReimbursementbyID(selection);
+			System.out.println("Processing reimbursement #" + reimbursementToBeProcessed.getID());
+			System.out.println("Details \n Author: " +
+			User_Services.getUserByID(reimbursementToBeProcessed.getAuthor()).getUserName()
+			+ "\n Amount: " + reimbursementToBeProcessed.getAmount()
+			+ "\n Description: " + reimbursementToBeProcessed.getDescription());
+			
+			System.out.println("Please enter the number of your choice");
+			System.out.println("1 -> Approve");
+			System.out.println("2 -> Deny");
+			
+			int decision = promptSelection(validEntries);
+			Status status = (decision == 1) ? Status.Approved : Status.Denied;
+			
+			Reimbursement_Services.update(reimbursementToBeProcessed, manager.getID(), status);
+			
+			System.out.println("Would you like to process another reimbursement?");
+			System.out.println("Please enter the number of your choice");
+			
+			System.out.println("1 -> Yes");
+			System.out.println("2 -> No");
+			
+			int lastChoice = promptSelection(validEntries);
+			
+			if (lastChoice == 2) {
+				processPortal = false;
+			}
+			
+			
 	}
 		
 }

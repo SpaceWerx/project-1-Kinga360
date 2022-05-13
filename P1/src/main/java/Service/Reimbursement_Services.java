@@ -10,7 +10,7 @@ public class Reimbursement_Services {
 		mockData.mockData();
 		reimbursements = mockData.getReimbursement();
 	}
-	public void update(Reimbursement unprocessedReimbursement, int resolverId, Status UpdateStatus) {
+	public static void update(Reimbursement unprocessedReimbursement, int resolverId, Status UpdateStatus) {
 		getData();
 		for (Reimbursement reimbursement : reimbursements) {
 		if (reimbursement.getID() == unprocessedReimbursement.getID()) {
@@ -59,7 +59,7 @@ public class Reimbursement_Services {
 		}
 		return pendingReimbursements;
 	}
-	public Reimbursement getReimbursementbyID(int id) {
+	public static Reimbursement getReimbursementbyID(int id) {
 		
 		for (Reimbursement reimbursement: reimbursements) {
 			if (reimbursement.getID() == id) {
