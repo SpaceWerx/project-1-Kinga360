@@ -5,8 +5,14 @@ import java.lang.*;
 
 
 public class CLI_Menu_Service {
+	
+	public CLI_Menu_Service() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	private Scanner scan = new Scanner(System.in);
-	private ArrayList<Integer> validEntries = new ArrayList<Integer>();
+//	private ArrayList<Integer> validEntries = new ArrayList<Integer>();
+	int[] validEntries = {0,1,2,3,4};
 	public void submitReimbursement(Users employee) {
 		Reimbursement reimbursementToBeSubmitted = new Reimbursement();
 		reimbursementToBeSubmitted.setAuthor(employee.getID());
@@ -17,10 +23,10 @@ public class CLI_Menu_Service {
 		System.out.println("2 -> Travel");
 		System.out.println("3 -> Food");
 		System.out.println("4 -> Other");
-		validEntries.add(1);
+	/**	validEntries.add(1);
 		validEntries.add(2);
 		validEntries.add(3);
-		validEntries.add(4);
+		validEntries.add(4); **/
 		int typeDecision = promptSelection(validEntries);
 		switch (typeDecision) {
 		case 1:
@@ -40,7 +46,7 @@ public class CLI_Menu_Service {
 			break;
 			
 		}
-		validEntries.clear();
+		
 		System.out.println("Please enter the dollar amount you are requesting to be reimbursed: ");
 		System.out.print("$");
 		
@@ -121,7 +127,7 @@ public class CLI_Menu_Service {
 		System.out.println();
 		
 		while (processPortal) {
-			List<Reimbursement> reimbursement = Reimbursement_Services.getPendingService();
+			List<Reimbursement> reimbursement = Reimbursement_Services.getPendingReimbursements();
 			if (reimbursement.isEmpty()) {
 			System.out.println("There are no reimbursements to process");
 			System.out.println("Returning to the previous menu");
@@ -130,7 +136,7 @@ public class CLI_Menu_Service {
 			int[] ids = new int[reimbursement.size()];
 			for (int i = 0; i < reimbursement.size(); i++) {
 				Reimbursement r = reimbursement.get(i);
-				Users author = User_Services.getUserById(r.getAuthor());
+				Users author = User_Services.getUserByID(r.getAuthor());
 				System.out.println(r.getID() + "-> " + author.getUserName()+ " :$" + r.getAmount());
 				ids[i] = r.getID();
 			}
@@ -166,7 +172,7 @@ public class CLI_Menu_Service {
 }
 	public void handlePortal (Roles role) {
 		// get the List of employees from the repository layer.
-		List<Users> user  = User_Services.getByRole(role);
+		List<Users> user  = User_Services.getUserByRole(role);
 		
 		int[] ids = new int[user.size() + 1];
 		ids[user.size()] = 0;
@@ -210,7 +216,7 @@ public class CLI_Menu_Service {
 		//Scan.nextLine() obtains the entire line, such as "123 456"
 		// split() turns into an array supported by whitespace, such as ["123 456"]
 		//[0] keeps only the first element, leaving "123"
-		return scan.nextLine().split(regex: " ")[0];
+		return scan.nextLine().split( " ")[0];
 	}
 	public void displayPendingReimbursement() {
 		List<Reimbursement> pendingReimbursements = Reimbursement_Services.getPendingReimbursements();
@@ -224,25 +230,37 @@ public class CLI_Menu_Service {
 		}
 	}
 	public void displayResolvedReimbursement() {
-		List<Reimbursement> resolvedReimbursements = Reimbursement_Services.getResolvedReimbursements();
+		List<Reimbursement> resolvedReimbursements;
 		
-		if (resolvedReimbursements.isEmpty()) {
-			System.out.println("No pending requests");
-			System.out.println("Returing to Previous menu...");
-		} 
-		for (Reimbursement r : resolvedReimbursements) {
-			System.out.print(r);
-		}
+			resolvedReimbursements = Reimbursement_Services.getResolvedReimbursements();
+			if (resolvedReimbursements.isEmpty()) {
+				System.out.println("No pending requests");
+				System.out.println("Returing to Previous menu...");
+			} 
+			for (Reimbursement r : resolvedReimbursements) {
+				System.out.print(r);
+			}
+		
+			
+		
+		
+		
 	}
 	public void displayPreviousRequests(Users employee) {
-		List<Reimbursement> reimbursements = Reimbursement_Services.getReimbursmentByAuthor(employee.getID());
-		if (reimbursements.isEmpty()) {
-			System.out.println("No pending requests");
-			System.out.println("Returing to Previous menu...");
-		} 
-		for (Reimbursement r : reimbursements) {
-			System.out.print(r);
-		}	
+		List<Reimbursement> reimbursements;
+	
+			reimbursements = Reimbursement_Services.getReimbursementByAuthor(employee.getID());
+			if (reimbursements.isEmpty()) {
+				System.out.println("No pending requests");
+				System.out.println("Returing to Previous menu...");
+			} 
+			for (Reimbursement r : reimbursements) {
+				System.out.print(r);
+			}	
+		
+			
+		
+		
 	}
 	public void displayMenu() {
 		boolean menuOptions = true; // Using this to let the menu continue after user input.
@@ -262,9 +280,9 @@ public class CLI_Menu_Service {
 			System.out.println("2 -> Finance Manager Portal");
 			System.out.println("0 -> Exit Application");
 			
-			validEntries.add(1);
+		/**	validEntries.add(1);
 			validEntries.add(2);
-			validEntries.add(0);
+			validEntries.add(0); **/
 			
 			//The user chooses a menu option and the scanner takes the input and put in into an int variable.
 			//Calls the promptSelection() helper method to handle validation
@@ -289,7 +307,7 @@ public class CLI_Menu_Service {
 				break;
 				
 			}
-			validEntries.clear();
+			
 		}//end this while loop
 	} //end display method
 	public void displayFinanceManagerMenu(Users manager) {
@@ -307,10 +325,10 @@ public class CLI_Menu_Service {
 			System.out.println("3 -> Process a reimbursement");
 			System.out.println("0 -> Return to Main Menu");
 			
-			validEntries.add(1);
+		/**	validEntries.add(1);
 			validEntries.add(2);
 			validEntries.add(3);
-			validEntries.add(0);
+			validEntries.add(0); **/
 			//The user chooses a menu option and the scanner takes the input and put it into an int variable
 			int firstChoice = promptSelection(validEntries); 
 			switch(firstChoice) {
@@ -329,7 +347,7 @@ public class CLI_Menu_Service {
 			managerPortal = false;
 			break;
 			}
-			validEntries.clear();
+			
 		}
 	}
 	public void displayEmployee(Users employee) {
@@ -347,10 +365,10 @@ boolean employeePortal = true;
 			System.out.println("3 -> Process a reimbursement");
 			System.out.println("0 -> Return to Main Menu");
 			
-			validEntries.add(1);
+		/**	validEntries.add(1);
 			validEntries.add(2);
 			validEntries.add(3);
-			validEntries.add(0);
+			validEntries.add(0); **/
 			
 			//The user chooses a menu option and the scanner takes the input and put it into an int variable
 			int firstChoice = promptSelection(validEntries); 
@@ -370,7 +388,7 @@ boolean employeePortal = true;
 			employeePortal = false;
 			break;
 			}
-			validEntries.clear();
+			
 		}
 	}
 		

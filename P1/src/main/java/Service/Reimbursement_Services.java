@@ -3,7 +3,7 @@ import java.util.*;
 import Models.*;
 
 public class Reimbursement_Services {
-	private ArrayList<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
+	private static ArrayList<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
 	public void update(Reimbursement unprocessedReimbursement, int resolverId, Status UpdateStatus) {
 		for (Reimbursement reimbursement : reimbursements) {
 		if (reimbursement.getID() == unprocessedReimbursement.getID()) {
@@ -29,7 +29,7 @@ public class Reimbursement_Services {
 		
 		
 		
-	public List<Reimbursement> getResolvedReimbursements(){
+	public static List<Reimbursement> getResolvedReimbursements(){
 		List <Reimbursement> resolvedReimbursements = new ArrayList<>();
 		
 		for (Reimbursement reimbursement: reimbursements) {
@@ -39,7 +39,7 @@ public class Reimbursement_Services {
 		}
 		return resolvedReimbursements;
 	}
-	public List<Reimbursement> getPendingReimbursements(){
+	public static List<Reimbursement> getPendingReimbursements(){
 		List <Reimbursement> pendingReimbursements = new ArrayList<>();
 		
 		for (Reimbursement reimbursement: reimbursements) {
@@ -58,7 +58,7 @@ public class Reimbursement_Services {
 		}
 		return null;
 	}
-	public List<Reimbursement> getReimbursementByAuthor(int userId){
+	public static List<Reimbursement> getReimbursementByAuthor(int userId){
 		List <Reimbursement> userReimbursements = new ArrayList<>();
 		for (Reimbursement reimbursement: reimbursements) {
 			if (reimbursement.getAuthor() == userId || reimbursement.getResolver() == userId) {
