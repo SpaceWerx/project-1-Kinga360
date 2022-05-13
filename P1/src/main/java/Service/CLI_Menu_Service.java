@@ -226,7 +226,7 @@ public class CLI_Menu_Service {
 			System.out.println("Returing to Previous menu...");
 		}
 		for (Reimbursement r : pendingReimbursements) {
-			System.out.print(r);
+			System.out.println(r);
 		}
 	}
 	public void displayResolvedReimbursement() {
@@ -234,11 +234,11 @@ public class CLI_Menu_Service {
 		
 			resolvedReimbursements = Reimbursement_Services.getResolvedReimbursements();
 			if (resolvedReimbursements.isEmpty()) {
-				System.out.println("No pending requests");
+				System.out.println("No resolved requests");
 				System.out.println("Returing to Previous menu...");
 			} 
 			for (Reimbursement r : resolvedReimbursements) {
-				System.out.print(r);
+				System.out.println(r);
 			}
 		
 			

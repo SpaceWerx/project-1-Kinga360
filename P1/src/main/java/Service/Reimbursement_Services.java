@@ -60,7 +60,7 @@ public class Reimbursement_Services {
 		return pendingReimbursements;
 	}
 	public Reimbursement getReimbursementbyID(int id) {
-		getData();
+		
 		for (Reimbursement reimbursement: reimbursements) {
 			if (reimbursement.getID() == id) {
 				return reimbursement;

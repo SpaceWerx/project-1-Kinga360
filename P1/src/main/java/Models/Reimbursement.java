@@ -13,12 +13,12 @@ public class Reimbursement {
 	
 	public Reimbursement(int id, int author, int resolver, String description, Type type, Status status, double amount) {
 		setID(id);
-		setAuthor(this.author);
-		setResolver(this.resolver);
+		setAuthor(author);
+		setResolver(resolver);
 		setDescription(description);
-		setType(this.type);
-		setStatus(this.status);
-		setAmount(this.amount);
+		setType(type);
+		setStatus(status);
+		setAmount(amount);
 		
 	}
 	public Reimbursement() {
