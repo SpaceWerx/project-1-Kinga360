@@ -5,9 +5,9 @@ import java.util.*;
 import Models.*;
 
 public class MockUserData {
-	private final List<Users> users = new ArrayList<>();
+	private final  ArrayList<Users> users = new ArrayList<>();
 	
-	public void MockData() {
+	public ArrayList<Users> MockData() {
 		Users Generic_Employee_1 = new Users(1,"genericEmployee1","genericPassword1",Roles.Employee);
 		Users Generic_Employee_2 = new Users(2,"genericEmployee2","genericPassword2",Roles.Employee);
 		Users Generic_Employee_3 = new Users(3,"genericEmployee3","genericPassword3",Roles.Employee);
@@ -22,6 +22,9 @@ public class MockUserData {
 		users.add(Generic_Fiance_Manager_1);
 		users.add(Generic_Fiance_Manager_2);
 		users.add(Generic_Fiance_Manager_3);
+		return users;
+		
 	}
-	public List<Users> getUsers(){return users;};
+	public ArrayList<Users> getUsers(){return users;};
+
 }

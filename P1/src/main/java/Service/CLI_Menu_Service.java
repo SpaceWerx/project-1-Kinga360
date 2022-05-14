@@ -69,6 +69,13 @@ public class CLI_Menu_Service {
 			System.out.println("You cannot submit an empty description, please explain the reason for your request.");
 			boolean valid = false;
 		}
+		MockReimbursementData newReimbursement = new MockReimbursementData();
+		
+		
+		int userID = employee.getID();
+		newReimbursement.getNewReimbursement( userID, 0, 
+				reimbursementToBeSubmitted.getDescription(), reimbursementToBeSubmitted.getType(), 
+				Status.Pending, reimbursementToBeSubmitted.getAmount());
 	}
 	/**
 	 * Prompts the user for input. <br>
@@ -142,7 +149,7 @@ public class CLI_Menu_Service {
 			}
 			System.out.println("Please enter the ID of the Reimbursement you wish to process.");
 			
-			int selection= (promptSelection(ids)); 
+			int selection= (promptSelection(ids));
 			Reimbursement reimbursementToBeProcessed = Reimbursement_Services.getReimbursementbyID(selection);
 			System.out.println("Processing reimbursement #" + reimbursementToBeProcessed.getID());
 			System.out.println("Details \n Author: " +
@@ -220,7 +227,7 @@ public class CLI_Menu_Service {
 		}
 		System.out.println("0 -> Return to Main menu");
 		System.out.println();
-		
+		user.clear();
 		int userChoice = promptSelection(ids);
 		
 		if (userChoice == 0) {
@@ -231,10 +238,13 @@ public class CLI_Menu_Service {
 		if (role == Roles.Manager) {
 			System.out.println("Opening manager portal  for " + employee.getUserName());
 			displayFinanceManagerMenu(employee);
+			
 		} else {
 			System.out.println("Opening employee portal for " + employee.getUserName());
 			displayEmployee(employee);
+			
 		}
+		
 	}
 	/** 
 	 * Prompts users for input, ignoring everything after the first whitespace.
@@ -391,9 +401,8 @@ boolean employeePortal = true;
 		
 		while (employeePortal) {
 			System.out.println("PLEASE ENTER THE NUMBER OF YOUR CHOICE");
-			System.out.println("1 -> View all pending reimburements");
-			System.out.println("2 -> View all resolved reimburements");
-			System.out.println("3 -> Process a reimbursement");
+			System.out.println("1 -> View Previous Request");
+			System.out.println("2 -> Submit a reimburement");
 			System.out.println("0 -> Return to Main Menu");
 			
 		/**	validEntries.add(1);
@@ -406,13 +415,10 @@ boolean employeePortal = true;
 			switch(firstChoice) {
 			//A break in each case block so the other cases will not run.
 		case 1:
-			displayPendingReimbursement();
+			displayPreviousRequests(employee);
 			break;
 		case 2:
-			displayResolvedReimbursement();
-			break;
-		case 3:
-			processReimbursement(employee);
+			submitReimbursement(employee);
 			break;
 		case 0:
 			System.out.println("Returning to Main Menu...");

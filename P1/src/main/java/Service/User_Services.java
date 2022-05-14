@@ -4,16 +4,16 @@ import java.util.*;
 import Mock_Data.*;
 import Models.*;
 public class User_Services {
-	private static  List<Users> users = new ArrayList<Users>();
+	
 	private static MockUserData mockData = new MockUserData();
+	private static  ArrayList<Users> users;
 	public static void getData() {
-		 
-		mockData.MockData();
-		users = mockData.getUsers();
+		users = mockData.MockData();
 	}
 	// returns the user name
 	public Users getUserName(String name) {
 		getData();
+		users = mockData.getUsers();
 		for (Users user: users) {
 			if (user.getUserName() == name) {
 				return user;
@@ -24,6 +24,7 @@ public class User_Services {
 	// Returns the user ID of the users
 	public static Users getUserByID(int id) {
 		getData();
+		users = mockData.getUsers();
 		for (Users user: users) {
 			if (user.getID() == id) {
 				return user;
@@ -32,13 +33,15 @@ public class User_Services {
 		return null;
 	}
 	// Returns the array list of users 
-	public List<Users> getAllUsers(){
+	public ArrayList<Users> getAllUsers(){
 		getData();
+		users = mockData.getUsers();
 		return users;
 	}
 	// Checks to see if the user exists by ID
 	public Users userExistById(String userName) {
 		getData();
+		users = mockData.getUsers();
 		boolean exists = false;
 		
 		while (!exists) {
@@ -52,9 +55,10 @@ public class User_Services {
 			}
 		return null;
 	}
-	public static List<Users> getUserByRole(Roles role) {
+	public static ArrayList<Users> getUserByRole(Roles role) {
 		getData();
 		for (Users user : users) {
+			
 			user.getRole();
 		}
 		return users;
