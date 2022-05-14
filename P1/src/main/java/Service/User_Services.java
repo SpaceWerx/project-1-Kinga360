@@ -6,9 +6,12 @@ import Models.*;
 public class User_Services {
 	
 	private static MockUserData mockData = new MockUserData();
-	private static  ArrayList<Users> users;
+	private static  ArrayList<Users> users = new ArrayList<Users>();
 	public static void getData() {
+		if (users.isEmpty()) {
+		
 		users = mockData.MockData();
+		}
 	}
 	// returns the user name
 	public Users getUserName(String name) {

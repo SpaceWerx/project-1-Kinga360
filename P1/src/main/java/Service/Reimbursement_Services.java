@@ -5,17 +5,20 @@ import Mock_Data.*;
 public class Reimbursement_Services {
 	
 	private static MockReimbursementData mockData = new MockReimbursementData();
-	private static ArrayList<Reimbursement> reimbursements; //= mockData.getReimbursement(); 
-	
+	private static ArrayList<Reimbursement> reimbursements = new ArrayList <Reimbursement>(); 
+	private static ArrayList <Reimbursement> pendingReimbursements = new ArrayList <Reimbursement>();
+	private static ArrayList <Reimbursement> resolvedReimbursements = new ArrayList<Reimbursement>();
 	public static void getData() {
+		if (reimbursements.isEmpty()){
 		mockData.mockData();
 		reimbursements = mockData.getReimbursement();
+		}
 	}
 	public static void clearData() {
 		reimbursements.clear();
 	}
 	public static void update(Reimbursement unprocessedReimbursement, int resolverId, Status UpdateStatus) {
-		//getData();
+		getData();
 		for (Reimbursement reimbursement : reimbursements) {
 		if (reimbursement.getID() == unprocessedReimbursement.getID()) {
 			reimbursement.setResolver(resolverId);
@@ -28,7 +31,7 @@ public class Reimbursement_Services {
 		throw new RuntimeException("There was an error processing this reimbursement, please try again");
 	}
 	public void submitReimbursement (Reimbursement reimbursementToBeSubmitted) {
-			//getData();
+			getData();
 			Reimbursement latestReimbursement;
 		
 			latestReimbursement = reimbursements.get(reimbursements.size() -1);
@@ -44,20 +47,22 @@ public class Reimbursement_Services {
 		
 		
 	public static List<Reimbursement> getResolvedReimbursements(){
-		
-		List <Reimbursement> resolvedReimbursements = new ArrayList<>();
-		
+		getData();
+		//reimbursements = mockData.mockData();
+		if (resolvedReimbursements.isEmpty()) {
 		for (Reimbursement reimbursement: reimbursements) {
 			if (reimbursement.getStatus() == Status.Approved || reimbursement.getStatus() == Status.Denied) {
 				resolvedReimbursements.add(reimbursement);
 			}
 		}
+		}
 		//clearData();
 		return resolvedReimbursements;
 	}
 	public static List<Reimbursement> getPendingReimbursements(){
-		reimbursements = mockData.mockData();
-		ArrayList <Reimbursement> pendingReimbursements = new ArrayList<>();
+		getData();
+		if (pendingReimbursements.isEmpty()) {
+		//ArrayList <Reimbursement> pendingReimbursements = new ArrayList<>();
 		
 		for (Reimbursement reimbursement: reimbursements) {
 				if (reimbursement.getStatus() == Status.Pending) {
@@ -65,12 +70,13 @@ public class Reimbursement_Services {
 			}
 				
 			}
-		
+		}
 		//clearData();
 		return pendingReimbursements;
 	}
+	
 	public static Reimbursement getReimbursementbyID(int id) {
-		//getData();
+		getData();
 		for (Reimbursement reimbursement: reimbursements) {
 			if (reimbursement.getID() == id) {
 				//clearData();
@@ -83,7 +89,7 @@ public class Reimbursement_Services {
 		return null;
 	}
 	public static List<Reimbursement> getReimbursementByAuthor(int userId){
-		//getData();
+		getData();
 		List <Reimbursement> userReimbursements = new ArrayList<>();
 		for (Reimbursement reimbursement: reimbursements) {
 			if (reimbursement.getAuthor() == userId || reimbursement.getResolver() == userId) {

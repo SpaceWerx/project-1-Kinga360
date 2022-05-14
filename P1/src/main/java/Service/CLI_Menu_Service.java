@@ -69,13 +69,17 @@ public class CLI_Menu_Service {
 			System.out.println("You cannot submit an empty description, please explain the reason for your request.");
 			boolean valid = false;
 		}
-		MockReimbursementData newReimbursement = new MockReimbursementData();
+		reimbursementToBeSubmitted.setResolver(0);
+		
+		Reimbursement_Services rService = new Reimbursement_Services();
+		rService.submitReimbursement(reimbursementToBeSubmitted);
+		//MockReimbursementData newReimbursement = new MockReimbursementData();
 		
 		
-		int userID = employee.getID();
-		newReimbursement.getNewReimbursement( userID, 0, 
-				reimbursementToBeSubmitted.getDescription(), reimbursementToBeSubmitted.getType(), 
-				Status.Pending, reimbursementToBeSubmitted.getAmount());
+		//int userID = employee.getID();
+		//newReimbursement.getNewReimbursement( userID, 0, 
+				//eimbursementToBeSubmitted.getDescription(), reimbursementToBeSubmitted.getType(), 
+				//Status.Pending, reimbursementToBeSubmitted.getAmount());
 	}
 	/**
 	 * Prompts the user for input. <br>
