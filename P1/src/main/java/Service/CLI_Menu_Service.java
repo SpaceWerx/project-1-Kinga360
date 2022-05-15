@@ -11,8 +11,8 @@ public class CLI_Menu_Service {
 		// TODO Auto-generated constructor stub
 	}
 	private Scanner scan = new Scanner(System.in);
-//	private ArrayList<Integer> validEntries = new ArrayList<Integer>();
-	int[] validEntries = {0,1,2,3,4};
+	//private ArrayList<Integer> validEntries = new ArrayList<Integer>();
+	//int[] validEntries = {0,1,2,3,4};
 	public void submitReimbursement(Users employee) {
 		Reimbursement reimbursementToBeSubmitted = new Reimbursement();
 		reimbursementToBeSubmitted.setAuthor(employee.getID());
@@ -23,10 +23,11 @@ public class CLI_Menu_Service {
 		System.out.println("2 -> Travel");
 		System.out.println("3 -> Food");
 		System.out.println("4 -> Other");
-	/**	validEntries.add(1);
+		ArrayList<Integer> validEntries = new ArrayList<Integer>();
+		validEntries.add(1);
 		validEntries.add(2);
 		validEntries.add(3);
-		validEntries.add(4); **/
+		validEntries.add(4); 
 		int typeDecision = promptSelection(validEntries);
 		switch (typeDecision) {
 		case 1:
@@ -164,7 +165,9 @@ public class CLI_Menu_Service {
 			System.out.println("Please enter the number of your choice");
 			System.out.println("1 -> Approve");
 			System.out.println("2 -> Deny");
-			
+			ArrayList<Integer> validEntries = new ArrayList<Integer>();
+			validEntries.add(1);
+			validEntries.add(2);
 			int decision = promptSelection(validEntries);
 			Status status = (decision == 1) ? Status.Approved : Status.Denied;
 			
@@ -324,10 +327,10 @@ public class CLI_Menu_Service {
 			System.out.println("1 -> Employee Portal");
 			System.out.println("2 -> Finance Manager Portal");
 			System.out.println("0 -> Exit Application");
-			
-		/**	validEntries.add(1);
+			ArrayList<Integer> validEntries = new ArrayList<Integer>();
+			validEntries.add(1);
 			validEntries.add(2);
-			validEntries.add(0); **/
+			validEntries.add(0); 
 			
 			//The user chooses a menu option and the scanner takes the input and put in into an int variable.
 			//Calls the promptSelection() helper method to handle validation
@@ -369,11 +372,11 @@ public class CLI_Menu_Service {
 			System.out.println("2 -> View all resolved reimburements");
 			System.out.println("3 -> Process a reimbursement");
 			System.out.println("0 -> Return to Main Menu");
-			
-		/**	validEntries.add(1);
+			ArrayList<Integer> validEntries = new ArrayList<Integer>();
+			validEntries.add(1);
 			validEntries.add(2);
 			validEntries.add(3);
-			validEntries.add(0); **/
+			validEntries.add(0); 
 			//The user chooses a menu option and the scanner takes the input and put it into an int variable
 			int firstChoice = promptSelection(validEntries); 
 			switch(firstChoice) {
@@ -408,11 +411,11 @@ boolean employeePortal = true;
 			System.out.println("1 -> View Previous Request");
 			System.out.println("2 -> Submit a reimburement");
 			System.out.println("0 -> Return to Main Menu");
-			
-		/**	validEntries.add(1);
+			ArrayList<Integer> validEntries = new ArrayList<Integer>();
+			validEntries.add(1);
 			validEntries.add(2);
 			validEntries.add(3);
-			validEntries.add(0); **/
+			validEntries.add(0); 
 			
 			//The user chooses a menu option and the scanner takes the input and put it into an int variable
 			int firstChoice = promptSelection(validEntries); 
