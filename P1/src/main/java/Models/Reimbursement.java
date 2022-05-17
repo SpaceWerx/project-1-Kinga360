@@ -34,6 +34,15 @@ public class Reimbursement {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	public Reimbursement(int i, int id2, String string, Type other, Status pending, double d) {
+		setID(i);
+		setAuthor(id2);
+		setDescription(string);
+		setType(other);
+		setStatus(pending);
+		setAmount(d);
+
+	}
 	public int getID() {
 		return ID;
 	}
