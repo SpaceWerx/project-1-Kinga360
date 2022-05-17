@@ -20,7 +20,7 @@ public class Reimbursement {
 		return reimbursements;
 		
 	}
-	public Reimbursement(int id, int author, int resolver, String description, Type type, Status status, double amount) {
+	public Reimbursement(int id, int author, int resolver, String description, Status status, Type type, double amount) {
 		setID(id);
 		setAuthor(author);
 		setResolver(resolver);
