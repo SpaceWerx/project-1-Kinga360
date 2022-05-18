@@ -43,6 +43,17 @@ public class Reimbursement {
 		setAmount(d);
 
 	}
+	public Reimbursement(int id2, int author2, int resolver2, String description2, Type lodging, Status approved,
+			double amount2) {
+		setID(id2);
+		setAuthor(author2);
+		setDescription(description2);
+		setType(lodging);
+		setStatus(approved);
+		setAmount(amount2);
+		setResolver(resolver2);
+		// TODO Auto-generated constructor stub
+	}
 	public int getID() {
 		return ID;
 	}
