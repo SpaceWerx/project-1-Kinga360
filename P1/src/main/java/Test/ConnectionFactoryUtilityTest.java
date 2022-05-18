@@ -118,5 +118,31 @@ public void testResolverIsAssignedAfterReimbursementUpdate() {
 	verify(userService).getUserByID(GENERIC_MANAGER_1.getID());
 	verify(reimbursementDAO).update(REIMBURSEMENT_TO_PROCESS);
 }
-
+@Test
+public void testGetResolvedReimburesementsReturnsOnlyApprovedAndDenied() {
+	//Telling the nested reimbursementDAO getStatus method to return the mocked list of approved and denied reimbursements and called respectively.
+	when(reimbursementDAO.getByStatus(Status.Approved)).thenReturn(mockApprovedReimbursement);
+	when(reimbursementDAO.getByStatus(Status.Denied)).thenReturn(mockDeniedReimbursement);
+	
+	//Creating a new list that combine the mocked approved and mocked denied reimbursements(similar to how the service methods works)
+	List<Reimbursement> resolvedReimbursements = new ArrayList<>();
+	resolvedReimbursements.addAll(mockApprovedReimbursement);
+	resolvedReimbursements.addAll(mockDeniedReimbursement);
+	
+	//Checking to make sure the service method  returns the correct data.
+	assertEquals(resolvedReimbursements,reimbursementService.getResolvedReimbursements());
+	
+	// Verifying that the mocked  reimbursementDAO method getByStatus is called twice.
+	verify(reimbursementDAO).getByStatus(Status.Approved);
+	verify(reimbursementDAO).getByStatus(Status.Denied);	
+}
+@Test
+public void testGetPendingReimbursementsReturnsOnlyPending() {
+	// Telling the nested reimbiursementDAO getStatus method to return the mocked list of pending reimbursements when called.
+	when(reimbursementDAO.getByStatus(any(Status.class))).thenReturn(mockPendingReimbursement);
+	// Checking to make sure the service method returns the correct data.
+	assertEquals(mockPendingReimbursement, reimbursementService.getPendingReimbursements());
+	//Verifying that the mocked reimbursementDAO method getByStatus is called
+	verify(reimbursementDAO).getByStatus(Status.Pending);
+}
 }
