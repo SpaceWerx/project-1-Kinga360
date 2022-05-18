@@ -15,6 +15,12 @@
 	    <version>5.8.2</version>
 	    <scope>test</scope>
 	</dependency>
+	<!-- this dependency will let us connect to the JDBC  -->
+	<dependency>
+	<groupId>org.postgresql</groupId>
+	<artifactId>postgresql</artifactId>
+	<version>42.2.14</version>
+	</dependency>
 </dependencies>
 
 </project>
