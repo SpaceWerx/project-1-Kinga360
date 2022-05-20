@@ -13,8 +13,18 @@ public class User_Services {
 		users = mockData.MockData();
 		}
 	}
+	public Users add(Users user) {
+		getData();
+		users = mockData.getUsers();
+		Users User = users.get(users.size() -1);
+		int id = User.getID() - 1;
+		user.setID(id);
+		users.add(user);
+		getUserByID(id);
+		return user;
+	}
 	// returns the user name
-	public Users getUserName(String name) {
+	public static Users getUserName(String name) {
 		getData();
 		users = mockData.getUsers();
 		for (Users user: users) {

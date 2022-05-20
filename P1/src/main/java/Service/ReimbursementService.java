@@ -3,6 +3,7 @@ import Models.*;
 import java.util.*;
 
 import DAO.ReimbursementDAO;
+import DAO.UserDAO;
 /**
  * The ReimbursementService should handle the submission, processing 
  * and retrieval of Reimbursements for the ERS application for the ERS application.
@@ -11,13 +12,13 @@ import DAO.ReimbursementDAO;
  */
 public class ReimbursementService {
 	//Instantiating the DAO and user services to utilize in various methods
-	ReimbursementDAO reimbursementDAO = new ReimbursementDAO();
-	UserService userService = new UserService();
+	static ReimbursementDAO reimbursementDAO = new ReimbursementDAO();
+	UserDAO userService = new UserDAO();
 	
 	/**
 	 * This method is meant to return a list of reimbursement records from the database that they have a status of pending.
 	 */
-	public List<Reimbursement> getResolvedReimbursement(){
+	public static List<Reimbursement> getResolvedReimbursement(){
 		//Creating a temporary return list to combine the record queries from the getByStatus
 		List<Reimbursement> resovledReimbursements = new ArrayList<>();
 		
@@ -28,6 +29,17 @@ public class ReimbursementService {
 		//return the combine list of records
 		return resovledReimbursements;
 	}
+	public static List<Reimbursement> getPendingReimbursement(){
+		//Creating a temporary return list to combine the record queries from the getByStatus
+		List<Reimbursement> pendingReimbursements = new ArrayList<>();
+		
+		//The addAll function adds a collection of records to the array list
+		pendingReimbursements.addAll(reimbursementDAO.getByStatus(Status.Pending));
+		
+		
+		//return the combine list of records
+		return pendingReimbursements;
+	}
 	/**
 	 * This method will take in a new reimbursement submission
 	 * The submission author must be an employee
@@ -35,7 +47,7 @@ public class ReimbursementService {
 	 */
 	public int submitReimbursement (Reimbursement reimbursementToBeSubmitted) {
 		//Getting the user information from the author ID attached to the reimbursement submission
-		Users employee = userService.getUserByID(reimbursementToBeSubmitted.getAuthor());
+		Users employee = userService.getUserById(reimbursementToBeSubmitted.getAuthor());
 		
 		//Checking if the user is an employee
 		if (employee.getRole() != Roles.Employee) {
@@ -56,7 +68,7 @@ public class ReimbursementService {
 	 */
 	public Reimbursement update(Reimbursement unprocessedReimbursement, int resolverID, Status updataStatus) {
 		//Getting the user information from the resolver ID passed in
-		Users manager = userService.getUserByID(resolverID);
+		Users manager = userService.getUserById(resolverID);
 		//Checking if the user is a manager
 		if(manager.getRole() != Roles.Manager) {
 			//Throwing an exception if the user is not manager
@@ -76,5 +88,9 @@ public class ReimbursementService {
 	 */
 	public List<Reimbursement> getReimbursementByAuthor(int userID){
 		return reimbursementDAO.getReimbursementByUser(userID);
+	}
+	public static List<Reimbursement> getPendingReimbursements() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

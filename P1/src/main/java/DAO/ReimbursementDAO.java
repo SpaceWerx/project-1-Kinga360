@@ -13,7 +13,7 @@ public class ReimbursementDAO {
 	 */
 	public void update(Reimbursement unprocessReimbursement) {
 		// try-catch block to catch sql exception that can be thrown with connection.
-		try (Connection connection = ConnectionFactoryUtility.getConnection()){
+		try (Connection connection = ConnectionFactory.getConnection()){
 			//Write the query that we want to send to the database and assign it to a string.
 			String sql = "UPDATE ers_reimbursements SET resolver = ?, status = ?:: WHERE id =?";
 			// Creating a prepared statement with the sql string we created.
@@ -41,7 +41,7 @@ public class ReimbursementDAO {
 	 */
 	public List<Reimbursement> getReimbursementByUser (int userID){
 		// Try-catch block to catch sql exception that can be thrown with connection.
-		try (Connection connection = ConnectionFactoryUtility.getConnection()){
+		try (Connection connection = ConnectionFactory.getConnection()){
 			//SQL statement prepared as a string.
 			// In the instance, we are filtering reimbursements by an author (user) ID.
 			String sql = "SELECT * FROM ers_reimbursements WHERE author =?";
@@ -78,7 +78,7 @@ public class ReimbursementDAO {
 	 */
 	public Reimbursement getReimbursementById(int id) {
 		// Try-catch block to catch sql exception that can be thrown with connection.
-		try (Connection connection = ConnectionFactoryUtility.getConnection()){
+		try (Connection connection = ConnectionFactory.getConnection()){
 			String sql = "SELECT * FROM ers_reimbursements where id = ?";
 			//When we need parameters we need to use a PREPARED statement, as opposed to a statement(seen above).
 			PreparedStatement preparedStatement =  connection.prepareStatement(sql); //prepared statement as opposed to created statement.
@@ -104,28 +104,84 @@ public class ReimbursementDAO {
 	/**
 	 * Should retrieve a list of reimbursements from the db with the corresponding status or an empty list if it matches.
 	 */
-	public List<Reimbursement> getByStatus(Status status){
+	public ArrayList<Reimbursement> getByStatus(Status status){
+		ArrayList<Reimbursement>temp = new ArrayList<Reimbursement>();
+		ArrayList<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
+		temp = getAllReimbursemnts();
+		if (status == Status.Pending) {
+			for(Reimbursement re : temp) {
+				if (re.getStatus()== status.Pending) {
+					try (Connection connection = ConnectionFactory.getConnection()){
+						String sql = "SELECT * FROM ers_reimbursements where id = ?";
+//						//When we need parameters we need to use a PREPARED statement, as opposed to a statement(seen above).
+						PreparedStatement preparedStatement =  connection.prepareStatement(sql); //prepared statement as opposed to created statement.
+						//insert the methods arguments(int id) as the first and (only) variable in the sql query.
+						preparedStatement.setInt(1, re.getID()); //the 1 is referring to the first parameter(?) found in our sql string
+						ResultSet resultSet = preparedStatement.executeQuery();
+//						//Create an empty arraylist to be filled with the data from the database
+						//ArrayList<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
+//						//While there are results in results
+						while(resultSet.next()) {
+						reimbursements.add(new Reimbursement(resultSet.getInt("id"), resultSet.getInt("author")
+								,resultSet.getInt("resolver"), resultSet.getString("description"),Status.valueOf(resultSet.getString("status")),
+								Type.valueOf(resultSet.getString("Type")), resultSet.getDouble("amount")));
+				}
+						return reimbursements;
+					} catch (SQLException e) {
+						System.out.println("Something went wrong with the database");
+						e.printStackTrace();
+					}
+				}
+			}
+		
+		}if (status == Status.Approved || status == Status.Denied) {
+			for(Reimbursement re : temp) {
+				if (re.getStatus()== Status.Approved ||re.getStatus()== Status.Approved) {
+					try (Connection connection = ConnectionFactory.getConnection()){
+						String sql = "SELECT * FROM ers_reimbursements where id = ?";
+//						//When we need parameters we need to use a PREPARED statement, as opposed to a statement(seen above).
+						PreparedStatement preparedStatement =  connection.prepareStatement(sql); //prepared statement as opposed to created statement.
+						//insert the methods arguments(int id) as the first and (only) variable in the sql query.
+						preparedStatement.setInt(1, re.getID()); //the 1 is referring to the first parameter(?) found in our sql string
+						ResultSet resultSet = preparedStatement.executeQuery();
+//						//Create an empty arraylist to be filled with the data from the database
+						//ArrayList<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
+//						//While there are results in results
+						while(resultSet.next()) {
+						reimbursements.add(new Reimbursement(resultSet.getInt("id"), resultSet.getInt("author")
+								,resultSet.getInt("resolver"), resultSet.getString("description"),Status.valueOf(resultSet.getString("status")),
+								Type.valueOf(resultSet.getString("Type")), resultSet.getDouble("amount")));
+				}
+						return reimbursements;
+					} catch (SQLException e) {
+						System.out.println("Something went wrong with the database");
+						e.printStackTrace();
+					}
+				}
+			}
+		
+		}
 		// Try-catch block to catch sql exception that can be thrown with connection.
-				try (Connection connection = ConnectionFactoryUtility.getConnection()){
-					String sql = "SELECT * FROM ers_reimbursements where id = ?";
-					//When we need parameters we need to use a PREPARED statement, as opposed to a statement(seen above).
-					PreparedStatement preparedStatement =  connection.prepareStatement(sql); //prepared statement as opposed to created statement.
-					//insert the methods arguments(int id) as the first and (only) variable in the sql query.
-					preparedStatement.setInt(1, id); //the 1 is referring to the first parameter(?) found in our sql string
-					ResultSet resultSet = preparedStatement.executeQuery();
-					//Create an empty arraylist to be filled with the data from the database
-					List <Reimbursement> reimbursements = new ArrayList<Reimbursement>();
-					//While there are results in results
-					while(resultSet.next()) {
-					reimbursements.add(new Reimbursement(resultSet.getInt("id"), resultSet.getInt("author")
-							,resultSet.getInt("resolver"), resultSet.getString("description"),Status.valueOf(resultSet.getString("status")),
-							Type.valueOf(resultSet.getString("Type")), resultSet.getDouble("amount")));
-				}
-					return reimbursements;
-				} catch (SQLException e) {
-					System.out.println("Something went wrong with the database");
-					e.printStackTrace();
-				}
+//				try (Connection connection = ConnectionFactory.getConnection()){
+//					String sql = "SELECT * FROM ers_reimbursements where id = ?";
+////					//When we need parameters we need to use a PREPARED statement, as opposed to a statement(seen above).
+//					PreparedStatement preparedStatement =  connection.prepareStatement(sql); //prepared statement as opposed to created statement.
+//					//insert the methods arguments(int id) as the first and (only) variable in the sql query.
+//					preparedStatement.setInt(1, 1); //the 1 is referring to the first parameter(?) found in our sql string
+//					ResultSet resultSet = preparedStatement.executeQuery();
+////					//Create an empty arraylist to be filled with the data from the database
+//					//ArrayList<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
+////					//While there are results in results
+//					while(resultSet.next()) {
+//					reimbursements.add(new Reimbursement(resultSet.getInt("id"), resultSet.getInt("author")
+//							,resultSet.getInt("resolver"), resultSet.getString("description"),Status.valueOf(resultSet.getString("status")),
+//							Type.valueOf(resultSet.getString("Type")), resultSet.getDouble("amount")));
+//			}
+//					return reimbursements;
+//				} catch (SQLException e) {
+//					System.out.println("Something went wrong with the database");
+//					e.printStackTrace();
+//				}
 				return null;
 				
 	}
@@ -133,10 +189,10 @@ public class ReimbursementDAO {
 	 * The getallReimbursements methods retrieves all reimbursement records from the database.
 	 * This method should return an array list of reimbursement or null if there is a connection error.
 	 */
-	public List<Reimbursement> getAllReimbursemnts(){
+	public ArrayList<Reimbursement> getAllReimbursemnts(){
 		// try catch block to catch sql  exception that can be thrown with connection
-		try (Connection connection = ConnectionFactoryUtility.getConnection()){
-		List<Reimbursement> reimbursements = new ArrayList<>();
+		try (Connection connection = ConnectionFactory.getConnection()){
+		ArrayList<Reimbursement> reimbursements = new ArrayList<>();
 		// write out the appropriate sql query testing.
 		String sql = "SELECT * FROM ers_reimbursements";
 		//we can use createStatement in this case because we do not have parameters in the query.
@@ -160,24 +216,28 @@ public class ReimbursementDAO {
 	 * The create method is meant to create a new record in the database for new reimbursement submissions.
 	 */
 	public int create(Reimbursement reimbursementToBeSubmitted) {
+		reimbursementToBeSubmitted.setResolver(1);
+		reimbursementToBeSubmitted.setStatus(Status.Pending);
 		//try catch block to catch sql exception that can be thrown with connection.
-		try (Connection connection = ConnectionFactoryUtility.getConnection()){
+		try (Connection connection = ConnectionFactory.getConnection()){
 			//writing out the relatively complex sql insert string to create a new record.
 			//we explicit ask the database to return the new id after entry.
-			String sql = "INSERT INTO ers_reimbursements (author, description, type, status, amount)"+
-			"VALUES (?,?,?::type, ?::status,?)"
-			+"RETURNING ers_reimbursemtns.id";
+			String sql = "INSERT INTO ers_reimbursements (id, author,resolver, description, type, status, amount)"+
+			"VALUES (?,?,?,?,?, ?,?)"
+			+"RETURNING ers_reimbursements.id";
 			//We must use a Prepared Statement because we have parameters.
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			//use the prepared statement objects method to inserts values into the query's ?s
 			// the values will come from the Reimbursement object we send in.
-			preparedStatement.setInt(1, reimbursementToBeSubmitted.getAuthor());
-			preparedStatement.setObject(2, reimbursementToBeSubmitted.getDescription());
-			preparedStatement.setObject(3, reimbursementToBeSubmitted.getType().name());
-			preparedStatement.setObject(4, reimbursementToBeSubmitted.getStatus().name());
-			preparedStatement.setObject(5, reimbursementToBeSubmitted.getAmount());
+			preparedStatement.setInt(1, reimbursementToBeSubmitted.getID());
+			preparedStatement.setInt(2, reimbursementToBeSubmitted.getAuthor());
+			preparedStatement.setInt(3, reimbursementToBeSubmitted.getResolver());
+			preparedStatement.setObject(4, reimbursementToBeSubmitted.getDescription());
+			preparedStatement.setObject(5, reimbursementToBeSubmitted.getType().name());
+			preparedStatement.setObject(6, reimbursementToBeSubmitted.getStatus().name());
+			preparedStatement.setObject(7, reimbursementToBeSubmitted.getAmount());
 			//We need to use the result  set to retrieve the newly generated ID after entry of the new record
-			ResultSet resultSet;
+			ResultSet resultSet =  preparedStatement.executeQuery();
 			//Here, we are checking that the sql query executed and returned the reimbursement record of the new id
 			if ((resultSet = preparedStatement.executeQuery()) != null) {
 				//must call this to get returned reimbursement record id

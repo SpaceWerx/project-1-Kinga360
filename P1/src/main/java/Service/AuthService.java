@@ -1,39 +1,46 @@
 package Service;
 
+import DAO.UserDAO;
 import Models.*;
 //
 public class AuthService {
-	
+	/**
 	  note: userToBeRegistered will have id=0.
 	  After registration, the registration will be a positive integer.
 	  Making new user object.
-	 
-	public int register(Users userToBeRegistered) {
+	**/ 
+	public static int register(Users userToBeRegistered) {
 		
 		// checking if the user name already exist in the database.
 		// if the method returns null, the user name is available.
 		
-		if (userDAO.getUserName(userToBeReristered != null)) {
+		if (UserDAO.getUserByUsername(userToBeRegistered.getUserName()) != null) {
 		//	 Throws a null pointer exception if the user name is already taken.
 			throw new NullPointerException("User name is already taken.");
 		}
 		 // take in the user object sent from the menu and send it to the userDAO to be inserted to the database
 //		// After the entry has been made, the ID of the new user is immediately returned.
-		 return userDAO.create(userToBeRegistered);
+		 try {
+			return UserDAO.create(userToBeRegistered);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 return UserDAO.create(userToBeRegistered);
 	}
 	/**
 	 * The login method is used to check the information given and verify their credentials.
 	 * 
 	 * @return User object
 	 */
-	  public Users login (String userName, String password) {
+	  public static Users login (String userName, String password) {
 //		  Instantiating a temporary user.
 		  Users user;
 //		
 //		// Try catch block will catch any exceptions thrown by the UserDAO method.
 		  try {
 			//  Retrieving the user data from the database from the user name given.
-			  user = userDAO.getByUserName(userName);
+			  user = UserDAO.getUserByUsername(userName);
 		
 			//  These conditional statements are checking for various contingencies.
 //			 The first is checking if the user exists and that the password given matches the one stored.

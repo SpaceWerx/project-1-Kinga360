@@ -1,4 +1,4 @@
-CREATE TABLE(
+CREATE TABLE ers_users(
 --The ID is SERIAL type to increment with every new row added
 --The id is denoted as the primary key 
 id SERIAL PRIMARY KEY,
@@ -9,27 +9,22 @@ username VARCHAR (250) UNIQUE NOT NULL,
 password VARCHAR(250) NOT NULL,
 role VARCHAR(250) NOT NULL
 );
+INSERT INTO ers_users (id,username,PASSWORD,role)
+VALUES(1,'genericEmployee1','genericPassword1','Employee'),
+(2,'genericEmployee2','genericPassword2','Employee'),
+(3,'genericEmployee3','genericPassword3','Employee'),
+(4,'genericManager1','genericPassword1','Manager'),
+(5,'genericManager2','genericPassword2','Manager'),
+(6,'genericManager3','genericPassword3','Manager');
 --This will create a table for the reimbursement data 
 CREATE TABLE ers_reimbursements(
---The ID is SERIAL type to increment with every new row added
---The ID is denoted as the primary key 
 id SERIAL PRIMARY KEY,
---The author and resolver are both integer values 
---They store the primary key (ID) of the respective USER
---Author should never null when a new entry is created; however, the resolver will be until processing
 author INT NOT NULL,
-resovler INT,
---The description must be stored as TEXT to ensure that longer description strings can be store appropriately
--- This field should never be null when a new entry is created
-description TEXT NOT NULL,
---The type and status are stored as strings and should never be null upon entry
+resolver INT NOT NULL,
+description VARCHAR(250) NOT NULL,
 type VARCHAR(250) NOT NULL,
 status VARCHAR (250) NOT NULL,
---The amount must be stored as a float to account for the double datatype
---This value will have 2 decimal places and should never be null upon entry
 amount FLOAT NOT NULL,
---We need to denote the foreign key relationships that the author and resolver IDs have the ers_users table.
---As you can see, we create new constraints that reference the ers_user primary key (ID)
 CONSTRAINT fk_author
 	FOREIGN KEY (author)
 		REFERENCES ers_users(id),
@@ -37,6 +32,12 @@ CONSTRAINT fk_resolver
 	FOREIGN KEY (resolver)
 		REFERENCES ers_users(id)
 );
+INSERT INTO ers_reimbursements (id, author, resolver, description, type, status, amount)
+VALUES(1, 1, 1, 'Oracle Java Certification', 'Other', 'Pending',250.00),
+(2, 2, 1, 'Travel to Reston HQ', 'Travel', 'Pending',600.00),
+(3, 1, 3, 'Free Lunch offer from Sean', 'Food', 'Approved',25.00),
+(4, 2, 4, 'Two night hotel stay near Orlando office for visit.', 'Lodging', 'Approved',300.00),
+(5, 1, 3, 'Rental car to drive from Reston to Orlando.', 'Travel', 'Denied',2500.00);
 --Remove the tables and all contents if they exists in the current schems
 --WARNING this is only meant to intitalize the database structure, do not use otherwize
 --It WILL delete all fo your data 

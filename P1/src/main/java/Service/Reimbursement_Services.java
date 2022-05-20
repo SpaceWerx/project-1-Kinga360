@@ -8,6 +8,7 @@ public class Reimbursement_Services {
 	private static ArrayList<Reimbursement> reimbursements = new ArrayList <Reimbursement>(); 
 	private static ArrayList <Reimbursement> pendingReimbursements = new ArrayList <Reimbursement>();
 	private static ArrayList <Reimbursement> resolvedReimbursements = new ArrayList<Reimbursement>();
+	
 	public static void getData() {
 		if (reimbursements.isEmpty()){
 		mockData.mockData();

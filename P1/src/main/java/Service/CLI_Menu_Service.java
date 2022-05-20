@@ -1,5 +1,8 @@
 package Service;
 import java.util.*;
+
+import DAO.ReimbursementDAO;
+import DAO.UserDAO;
 import Models.*;
 import java.lang.*;
 import Mock_Data.*;
@@ -13,6 +16,7 @@ public class CLI_Menu_Service {
 	private Scanner scan = new Scanner(System.in);
 	//private ArrayList<Integer> validEntries = new ArrayList<Integer>();
 	//int[] validEntries = {0,1,2,3,4};
+
 	public void submitReimbursement(Users employee) {
 		Reimbursement reimbursementToBeSubmitted = new Reimbursement();
 		reimbursementToBeSubmitted.setAuthor(employee.getID());
@@ -72,7 +76,7 @@ public class CLI_Menu_Service {
 		}
 		reimbursementToBeSubmitted.setResolver(0);
 		
-		Reimbursement_Services rService = new Reimbursement_Services();
+		ReimbursementService rService = new ReimbursementService();
 		rService.submitReimbursement(reimbursementToBeSubmitted);
 		//MockReimbursementData newReimbursement = new MockReimbursementData();
 		
@@ -148,7 +152,7 @@ public class CLI_Menu_Service {
 			int[] ids = new int[reimbursement.size()];
 			for (int i = 0; i < reimbursement.size(); i++) {
 				Reimbursement r = reimbursement.get(i);
-				Users author = User_Services.getUserByID(r.getAuthor());
+				Users author = UserService.getUserByID(r.getAuthor());
 				System.out.println(r.getID() + "-> " + author.getUserName()+ " :$" + r.getAmount());
 				ids[i] = r.getID();
 			}
@@ -158,7 +162,7 @@ public class CLI_Menu_Service {
 			Reimbursement reimbursementToBeProcessed = Reimbursement_Services.getReimbursementbyID(selection);
 			System.out.println("Processing reimbursement #" + reimbursementToBeProcessed.getID());
 			System.out.println("Details \n Author: " +
-			User_Services.getUserByID(reimbursementToBeProcessed.getAuthor()).getUserName()
+			UserService.getUserByID(reimbursementToBeProcessed.getAuthor()).getUserName()
 			+ "\n Amount: " + reimbursementToBeProcessed.getAmount()
 			+ "\n Description: " + reimbursementToBeProcessed.getDescription());
 			
@@ -217,7 +221,7 @@ public class CLI_Menu_Service {
 }
 	public void handlePortal (Roles role) {
 		// get the List of employees from the repository layer.
-		List<Users> user  = User_Services.getUserByRole(role);
+		List<Users> user  = UserService.getUserByRole(role);
 		
 		int[] ids = new int[user.size() + 1];
 		ids[user.size()] = 0;
@@ -240,7 +244,7 @@ public class CLI_Menu_Service {
 		if (userChoice == 0) {
 			return;
 		}
-		Users employee = User_Services.getUserByID(userChoice);
+		Users employee = UserService.getUserByID(userChoice);
 		
 		if (role == Roles.Manager) {
 			System.out.println("Opening manager portal  for " + employee.getUserName());
@@ -267,7 +271,7 @@ public class CLI_Menu_Service {
 		return scan.nextLine().split( " ")[0];
 	}
 	public void displayPendingReimbursement() {
-		List<Reimbursement> pendingReimbursements = Reimbursement_Services.getPendingReimbursements();
+		List<Reimbursement> pendingReimbursements = ReimbursementService.getPendingReimbursement();
 		
 		if (pendingReimbursements.isEmpty()) {
 			System.out.println("No pending requests");
@@ -280,7 +284,7 @@ public class CLI_Menu_Service {
 	public void displayResolvedReimbursement() {
 		List<Reimbursement> resolvedReimbursements;
 		
-			resolvedReimbursements = Reimbursement_Services.getResolvedReimbursements();
+			resolvedReimbursements = ReimbursementService.getResolvedReimbursement();
 			if (resolvedReimbursements.isEmpty()) {
 				System.out.println("No resolved requests");
 				System.out.println("Returing to Previous menu...");
@@ -318,45 +322,68 @@ public class CLI_Menu_Service {
 		System.out.println("Welcome to Revature reimbursement system");
 		System.out.println("----------------------------------------");
 		System.out.println();
+//		
+//		AuthService auth = new AuthService();
+//		System.out.println("Select the number for the action you want to perform \n 1) register  \n 2) login");
+//		ArrayList<Integer> selection = new ArrayList<Integer>();
+//		selection.add(1);
+//		selection.add(2);
+//		int firstSelection = promptSelection(selection);
+//		switch (firstSelection) {
+//		case 1:
+//			System.out.println("What user name do you want?");
+//			String name = scan.next();
+//			Users Name = new Users();
+//			Name.setUserName(name);
+//			auth.register(Name);
+//		case 2:
+//			System.out.println("What is the username?");
+//			String username = scan.next();
+//			System.out.println("What is the password");
+//			String password = scan.next();
+//			auth.login(username, password);
+
+			// display the menu as long as the menuOptions boolean == true
+			// display all menu options until boolean == false
+			while(menuOptions) {
+				// menu options
+				System.out.println("PLEASE ENTER THE NUMBER OF YOUR CHOICE");
+				System.out.println("1 -> Employee Portal");
+				System.out.println("2 -> Finance Manager Portal");
+				System.out.println("0 -> Exit Application");
+				ArrayList<Integer> validEntries = new ArrayList<Integer>();
+				validEntries.add(1);
+				validEntries.add(2);
+				validEntries.add(0); 
+				
+				//The user chooses a menu option and the scanner takes the input and put in into an int variable.
+				//Calls the promptSelection() helper method to handle validation
+				// The parameters list the valid options that the user must choose from.
+				int firstChoice = promptSelection(validEntries);
+				
+				//Takes the user input and the switch statement executes the appropriate code
+				switch(firstChoice){
+					
+				//A break in each case block so the other cases will not run.
+				case 1:
+					handlePortal(Roles.Employee);
+					break;
+					
+				case 2:
+					handlePortal(Roles.Manager);
+					break;
+					
+				case 0:
+					System.out.println("\n Have a great day! Goodbye.");
+					menuOptions = false;
+					break;
+					
+				}
+				
+			}//end this while loop
+	//	}
 		
-		// display the menu as long as the menuOptions boolean == true
-		// display all menu options until boolean == false
-		while(menuOptions) {
-			// menu options
-			System.out.println("PLEASE ENTER THE NUMBER OF YOUR CHOICE");
-			System.out.println("1 -> Employee Portal");
-			System.out.println("2 -> Finance Manager Portal");
-			System.out.println("0 -> Exit Application");
-			ArrayList<Integer> validEntries = new ArrayList<Integer>();
-			validEntries.add(1);
-			validEntries.add(2);
-			validEntries.add(0); 
-			
-			//The user chooses a menu option and the scanner takes the input and put in into an int variable.
-			//Calls the promptSelection() helper method to handle validation
-			// The parameters list the valid options that the user must choose from.
-			int firstChoice = promptSelection(validEntries);
-			
-			//Takes the user input and the switch statement executes the appropriate code
-			switch(firstChoice){
-				
-			//A break in each case block so the other cases will not run.
-			case 1:
-				handlePortal(Roles.Employee);
-				break;
-				
-			case 2:
-				handlePortal(Roles.Manager);
-				break;
-				
-			case 0:
-				System.out.println("\n Have a great day! Goodbye.");
-				menuOptions = false;
-				break;
-				
-			}
-			
-		}//end this while loop
+		
 	} //end display method
 	public void displayFinanceManagerMenu(Users manager) {
 		boolean managerPortal = true;

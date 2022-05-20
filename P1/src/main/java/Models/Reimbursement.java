@@ -72,6 +72,7 @@ public class Reimbursement {
 	public void setResolver(int resolver) {
 		this.resolver = resolver;
 	}
+	
 	public String getDescription() {
 		return Description;
 	}
@@ -87,8 +88,8 @@ public class Reimbursement {
 	public Status getStatus() {
 		return status;
 	}
-	public void setStatus(Status status) {
-		this.status = status;
+	public void setStatus(Status string) {
+		this.status = string;
 	}
 	public double getAmount() {
 		return amount;

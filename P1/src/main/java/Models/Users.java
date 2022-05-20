@@ -37,6 +37,11 @@ public class Users {
 		setPassword(password);
 		setRole(role);
 	}
+	public void add( String password, Roles role) {
+		
+		setPassword(password);
+		setRole(role);
+	}
 	public Users() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -60,6 +65,13 @@ public class Users {
 	@Override
 	public String toString() {
 		return "Users [userName=" + userName + ", Password=" + Password + ", role=" + role + ", ID=" + ID + "]";
+	}
+	public void add(int int1, String string, String string2, Roles valueOf) {
+		setID(int1);
+		setUserName(string);
+		setPassword(string2);
+		setRole(valueOf);
+		
 	}
 	
 	
