@@ -69,4 +69,8 @@ public class UserService {
 		}
 		return users;
 	}
+	public void add(Users user) {
+		// TODO Auto-generated method stub
+		users.add(user);
+	}
 }

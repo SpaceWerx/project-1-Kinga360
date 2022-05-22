@@ -175,27 +175,27 @@ public class UserDAO {
 		return null;
 	}
 	public static void create(Users userToBeSubmitted) {
-		Scanner scan = new Scanner(System.in);
-		System.out.println("create a password.");
-		String password = scan.next();
-		userToBeSubmitted.setPassword(password);
-		
-		boolean roles = false;
-		System.out.println("What is the role?");
-		String role = scan.next();
-		while(roles == false) {
-		if (role.equals("Manager")) {
-			userToBeSubmitted.setRole(Roles.Manager);
-			roles = true;
-		}
-		else if(role.equals("Employee")) {
-			userToBeSubmitted.setRole(Roles.Employee);
-			roles = true;
-		}
-		else {
-			System.out.println("Please enter Manager or Employee");	
-		}
-		}
+//		Scanner scan = new Scanner(System.in);
+//		System.out.println("create a password.");
+//		String password = scan.next();
+//		userToBeSubmitted.setPassword(password);
+//		
+//		boolean roles = false;
+//		System.out.println("What is the role?");
+//		String role = scan.next();
+//		while(roles == false) {
+//		if (role.equals("Manager")) {
+//			userToBeSubmitted.setRole(Roles.Manager);
+//			roles = true;
+//		}
+//		else if(role.equals("Employee")) {
+//			userToBeSubmitted.setRole(Roles.Employee);
+//			roles = true;
+//		}
+//		else {
+//			System.out.println("Please enter Manager or Employee");	
+//		}
+//		}
 		ArrayList<Users> users = new ArrayList<Users>();
 		users = getAllUsers();
 		int userid = users.size() + 1;

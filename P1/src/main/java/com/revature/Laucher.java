@@ -2,6 +2,7 @@ package com.revature;
 import Models.*;
 import Service.*;
 import Utilities.ConnectionFactory;
+import controller.ReimbursementController;
 import controller.UserController;
 import io.javalin.Javalin;
 
@@ -12,6 +13,7 @@ public class Laucher {
 
 	public static void main(String[] args) {
 		UserController userController = new UserController();
+		ReimbursementController rc = new ReimbursementController();
 		try (Connection conn = ConnectionFactory.getConnection()){
 			System.out.println("Connection is successful");
 			//CLI_Menu_Service driver = new CLI_Menu_Service();
@@ -27,12 +29,14 @@ public class Laucher {
 			}
 			).start(3000);
 		//now we need our endpoints
-		app.get("/User", userController.getUsersHandler());
+		app.get("/User", userController.getUsersHandler);
 		
-		app.post("/User",userController.inserUsersHandler());
+		app.post("/User",userController.insertUsersHandler);
 		
-		app.post("/Login", null);
+		app.get("/Reimbursement", rc.getReimbursementHandler);
+		app.post("/Reimbursement", rc.insertReimbursementHandler);
+		//app.post("/Login", null);
 		}
 	} 
 
-}
+
