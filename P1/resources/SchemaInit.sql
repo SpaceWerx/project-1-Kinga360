@@ -33,8 +33,8 @@ amount FLOAT NOT NULL
 --		REFERENCES ers_users(id)
 );
 INSERT INTO ers_reimbursements (id, author, resolver, description, type, status, amount)
-VALUES(1, 1, 1, 'Oracle Java Certification', 'Other', 'Pending',250.00),
-(2, 2, 1, 'Travel to Reston HQ', 'Travel', 'Pending',600.00),
+VALUES(1, 1, 0, 'Oracle Java Certification', 'Other', 'Pending',250.00),
+(2, 2, 0, 'Travel to Reston HQ', 'Travel', 'Pending',600.00),
 (3, 1, 3, 'Free Lunch offer from Sean', 'Food', 'Approved',25.00),
 (4, 2, 4, 'Two night hotel stay near Orlando office for visit.', 'Lodging', 'Approved',300.00),
 (5, 1, 3, 'Rental car to drive from Reston to Orlando.', 'Travel', 'Denied',2500.00);

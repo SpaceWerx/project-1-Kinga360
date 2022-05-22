@@ -65,24 +65,30 @@ public class ReimbursementController {
 		ctx.status(207);
 	};
 	public Handler Process  = (ctx) ->{
-		String body = ctx.body();
-		Gson gson = new Gson();
-		int resolverid  = gson.fromJson(body, Integer.class);
-		List<Reimbursement>reimbursement = ReimbursementService.getALLReimbursement();
-		String JSONObject = gson.toJson(reimbursement + "Which one would you like to process?");
-		ctx.result(JSONObject);
-		int id = gson.fromJson(body, Integer.class);
-		for (Reimbursement r : reimbursement) {
-			if (id == r.getID()) {
-				ctx.result("What status do you choose?");
-				String status = gson.fromJson(body, String.class);
-				if (status.equals("Pending")) {
-					ReimbursementService.update(r, id, Status.Pending);
-					ctx.result(JSONObject);
-				}
-				
-			}
-		}
+//		String body = ctx.body();
+//		Gson gson = new Gson();
+//		int resolverid  = gson.fromJson(body, Integer.class);
+//		//List<Reimbursement>reimbursement = ReimbursementService.getALLReimbursement();
+//		String JSONObject = gson.toJson(reimbursement + "Which one would you like to process?");
+//		ctx.result(JSONObject);
+//		int id = gson.fromJson(body, Integer.class);
+//		for (Reimbursement r : reimbursement) {
+//			if (id == r.getID()) {
+//				ctx.result("What status do you choose?");
+//				String status = gson.fromJson(body, String.class);
+//				if (status.equals("Pending")) {
+//					ReimbursementService.update(r, id, Status.Pending);
+//					ctx.result(JSONObject);
+//				}
+//				
+//			}
+			String body = ctx.body();
+			Gson gson = new Gson();
+			Reimbursement reimbursement = gson.fromJson(body, Reimbursement.class);
+			ReimbursementService.update(reimbursement, reimbursement.getResolver(), reimbursement.getStatus());
+			String JSONObject = gson.toJson("Reimbursement processed successfully");
+			ctx.result(JSONObject);
+		
 		//int id = gson.fromJson(body, Integer.class);
 		
 		
