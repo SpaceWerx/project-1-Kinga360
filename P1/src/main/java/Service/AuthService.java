@@ -2,6 +2,7 @@ package Service;
 
 import DAO.UserDAO;
 import Models.*;
+import java.util.*;
 //
 public class AuthService {
 	/**
@@ -9,7 +10,7 @@ public class AuthService {
 	  After registration, the registration will be a positive integer.
 	  Making new user object.
 	**/ 
-	public static int register(Users userToBeRegistered) {
+	public static void register(Users userToBeRegistered) {
 		
 		// checking if the user name already exist in the database.
 		// if the method returns null, the user name is available.
@@ -20,13 +21,14 @@ public class AuthService {
 		}
 		 // take in the user object sent from the menu and send it to the userDAO to be inserted to the database
 //		// After the entry has been made, the ID of the new user is immediately returned.
+		
 		 try {
-			return UserDAO.create(userToBeRegistered);
+			 UserDAO.create(userToBeRegistered);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 return UserDAO.create(userToBeRegistered);
+		 //return UserDAO.create(userToBeRegistered);
 	}
 	/**
 	 * The login method is used to check the information given and verify their credentials.
@@ -40,12 +42,13 @@ public class AuthService {
 //		// Try catch block will catch any exceptions thrown by the UserDAO method.
 		  try {
 			//  Retrieving the user data from the database from the user name given.
-			  user = UserDAO.getUserByUsername(userName);
-		
+			  user = UserDAO.getUserByUsernames(userName);
+			  
 			//  These conditional statements are checking for various contingencies.
 //			 The first is checking if the user exists and that the password given matches the one stored.
-			if (user != null && password.equals(user.getPassword())) {
-//				
+		
+			  if (user != null && password.equals(user.getPassword())) {
+				
 //				//If this one is true, the user object is returned and login is deemed successful.
 				System.out.println("Logged in successful.");
 				return user;

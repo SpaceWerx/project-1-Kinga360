@@ -9,6 +9,7 @@ public class JavalinConfigurationUtility {
 	AuthController authController = new AuthController();
 	UserController userController = new UserController();
 	RemibursementController reimbursementController = new ReimbursementController();
+	
 public void start(int port) {
 	//Starting the Javalin instance on the server
 	this.app.start(port); 
@@ -16,7 +17,7 @@ public void start(int port) {
 //Creating the Javalin app to designate routes
 //Enabling CORS for all origins to avoid http request constraints
 Javalin app = Javalin.create(JavalinConfig::enablecoresforallorigins).routers()->{
-	
+	path("Login")
 }
 
 }

@@ -143,7 +143,7 @@ public class CLI_Menu_Service {
 		System.out.println();
 		
 		while (processPortal) {
-			List<Reimbursement> reimbursement = Reimbursement_Services.getPendingReimbursements();
+			List<Reimbursement> reimbursement = ReimbursementService.getPendingReimbursement();
 			if (reimbursement.isEmpty()) {
 			System.out.println("There are no reimbursements to process");
 			System.out.println("Returning to the previous menu");
@@ -159,7 +159,7 @@ public class CLI_Menu_Service {
 			System.out.println("Please enter the ID of the Reimbursement you wish to process.");
 			
 			int selection= (promptSelection(ids));
-			Reimbursement reimbursementToBeProcessed = Reimbursement_Services.getReimbursementbyID(selection);
+			Reimbursement reimbursementToBeProcessed = ReimbursementService.getReimbursementByID(selection);
 			System.out.println("Processing reimbursement #" + reimbursementToBeProcessed.getID());
 			System.out.println("Details \n Author: " +
 			UserService.getUserByID(reimbursementToBeProcessed.getAuthor()).getUserName()
@@ -175,7 +175,7 @@ public class CLI_Menu_Service {
 			int decision = promptSelection(validEntries);
 			Status status = (decision == 1) ? Status.Approved : Status.Denied;
 			
-			Reimbursement_Services.update(reimbursementToBeProcessed, manager.getID(), status);
+			ReimbursementService.update(reimbursementToBeProcessed, manager.getID(), status);
 			
 			System.out.println("Would you like to process another reimbursement?");
 			System.out.println("Please enter the number of your choice");
@@ -301,7 +301,7 @@ public class CLI_Menu_Service {
 	public void displayPreviousRequests(Users employee) {
 		List<Reimbursement> reimbursements;
 	
-			reimbursements = Reimbursement_Services.getReimbursementByAuthor(employee.getID());
+			reimbursements = ReimbursementService.getReimbursementByAuthor(employee.getID());
 			if (reimbursements.isEmpty()) {
 				System.out.println("No pending requests");
 				System.out.println("Returing to Previous menu...");
@@ -323,26 +323,29 @@ public class CLI_Menu_Service {
 		System.out.println("----------------------------------------");
 		System.out.println();
 //		
-//		AuthService auth = new AuthService();
-//		System.out.println("Select the number for the action you want to perform \n 1) register  \n 2) login");
-//		ArrayList<Integer> selection = new ArrayList<Integer>();
-//		selection.add(1);
-//		selection.add(2);
-//		int firstSelection = promptSelection(selection);
-//		switch (firstSelection) {
-//		case 1:
-//			System.out.println("What user name do you want?");
-//			String name = scan.next();
-//			Users Name = new Users();
-//			Name.setUserName(name);
-//			auth.register(Name);
-//		case 2:
-//			System.out.println("What is the username?");
-//			String username = scan.next();
-//			System.out.println("What is the password");
-//			String password = scan.next();
-//			auth.login(username, password);
-
+		
+		System.out.println("Select the number for the action you want to perform \n 1) register  \n 2) login");
+		ArrayList<Integer> selection = new ArrayList<Integer>();
+		selection.add(1);
+		selection.add(2);
+		int firstSelection = promptSelection(selection);
+		switch (firstSelection) {
+		case 1:
+			System.out.println("What user name do you want?");
+			String name = scan.next();
+			Users Name = new Users();
+			Name.setUserName(name);
+			AuthService.register(Name);
+			break;
+		case 2:
+			Users user = new Users();
+			do {
+			System.out.println("What is the username?");
+			String username = scan.next();
+			System.out.println("What is the password");
+			String password = scan.next();
+			user = AuthService.login(username, password);
+			}while(user == null);
 			// display the menu as long as the menuOptions boolean == true
 			// display all menu options until boolean == false
 			while(menuOptions) {
@@ -381,7 +384,7 @@ public class CLI_Menu_Service {
 				}
 				
 			}//end this while loop
-	//	}
+	}
 		
 		
 	} //end display method

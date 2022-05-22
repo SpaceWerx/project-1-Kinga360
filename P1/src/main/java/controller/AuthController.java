@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import Models.Users;
 import Service.AuthService;
+import io.javalin.http.Context;
+import io.javalin.http.HttpCode;
 
 public class AuthController{
 	public void handleRegisterMethod(Context ctx) {
@@ -44,7 +46,7 @@ public class AuthController{
 		//Checking to make sure that the appropriate forms are provided.
 		if (Objects.equals(username, "") || Objects.equals(password, "")) {
 			//Returning bad request status and message
-			ctx.status(HttpCode.BADREQUEST);
+			ctx.status(HttpCode.BAD_REQUEST);
 			
 		}else {
 			Users user = AuthService.login(username,password);
@@ -53,13 +55,13 @@ public class AuthController{
 			//The service returns null if unsuccessful
 			if (user != null) {
 				//Sending accepted status code
-				ctx.status(HttpCode.Accepted);
+				ctx.status(HttpCode.ACCEPTED);
 				//Giving the front-end access to their headers
 				ctx.header("Access-Control-Expose-Header","Current User");
 				ctx.header("Current-User",""+user.getID());
 				ctx.result(user.getRole().toString());
 			}else {
-				ctx.status(HttpCode.BADREQUEST);
+				ctx.status(HttpCode.BAD_REQUEST);
 				ctx.result("Invalid Creditionals");
 			}
 		}

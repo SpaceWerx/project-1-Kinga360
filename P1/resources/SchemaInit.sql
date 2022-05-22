@@ -24,13 +24,13 @@ resolver INT NOT NULL,
 description VARCHAR(250) NOT NULL,
 type VARCHAR(250) NOT NULL,
 status VARCHAR (250) NOT NULL,
-amount FLOAT NOT NULL,
-CONSTRAINT fk_author
-	FOREIGN KEY (author)
-		REFERENCES ers_users(id),
-CONSTRAINT fk_resolver
-	FOREIGN KEY (resolver)
-		REFERENCES ers_users(id)
+amount FLOAT NOT NULL
+--CONSTRAINT fk_author
+--	FOREIGN KEY (author)
+--		REFERENCES ers_users(id),
+--CONSTRAINT fk_resolver
+--	FOREIGN KEY (resolver)
+--		REFERENCES ers_users(id)
 );
 INSERT INTO ers_reimbursements (id, author, resolver, description, type, status, amount)
 VALUES(1, 1, 1, 'Oracle Java Certification', 'Other', 'Pending',250.00),

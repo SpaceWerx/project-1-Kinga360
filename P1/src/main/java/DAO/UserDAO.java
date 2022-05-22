@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Scanner;
 import Mock_Data.MockUserData;
 import Models.Reimbursement;
 import Models.Roles;
@@ -45,8 +45,7 @@ public class UserDAO {
 	public String toString() {
 		return "UserDAO []";
 	}
-	
-	public static Users getUserByUsername(String userID){
+	public static String getUserByUsername(String username){
 		// Try-catch block to catch sql exception that can be thrown with connection.
 		try (Connection connection = ConnectionFactory.getConnection()){
 			//SQL statement prepared as a string.
@@ -55,20 +54,69 @@ public class UserDAO {
 			//Preparing the sql statement to be executed once we fill in the query parameters.
 			PreparedStatement preparedStatement =  connection.prepareStatement(sql);
 			//Filling the missing query value (?) with the method parameter (userID).
-			preparedStatement.setString(1,userID);
+			preparedStatement.setString(1,username);
 			// Building a sql result set from the execution of the query statement.
 			ResultSet resultSet = preparedStatement.executeQuery();
 			// Initializing a new Reimbursement array list  to house and return with the data from the database.
-			Users user = new Users();
+			ArrayList<Users> users = new ArrayList<Users>();
+			users = getAllUsers();
+			for(Users user : users) {
+				if (username.equals(user.getUserName())) {
+					return username;
+				}
+			}
+			return null;
 			// This while loop will continue to add reimbursements to the list
 			// Until all the data from the result set has run out.
-			while (resultSet.next()) {
-				// Adding reimbursements to the list with the data extracted from the database.
-				user.add(resultSet.getInt("id"), resultSet.getString("username")
-						,resultSet.getString("password"), Roles.valueOf(resultSet.getString("role")));
+//			while (resultSet.next()) {
+//				// Adding reimbursements to the list with the data extracted from the database.
+//				user.setUserName(resultSet.getString("username"));
+////				user.add(resultSet.getInt("id"), resultSet.getString("username")
+////						,resultSet.getString("password"), Roles.valueOf(resultSet.getString("role")));
+//			}
+//			//return the list of reimbursements that have the matching author (user) id.
+//			return user;
+			
+			
+		}catch (SQLException e) {
+			//catching the sql exception (this is a good place to utilize custom exception handling).
+			System.out.println("Someting went wrong obtaining your list.");
+			e.printStackTrace();
+		}
+		//fail safe if the try catch block does not run.
+		return null;
+	}
+	public static Users getUserByUsernames(String username){
+		// Try-catch block to catch sql exception that can be thrown with connection.
+		try (Connection connection = ConnectionFactory.getConnection()){
+			//SQL statement prepared as a string.
+			// In the instance, we are filtering reimbursements by an author (user) ID.
+			String sql = "SELECT * FROM ers_users WHERE username =?";
+			//Preparing the sql statement to be executed once we fill in the query parameters.
+			PreparedStatement preparedStatement =  connection.prepareStatement(sql);
+			//Filling the missing query value (?) with the method parameter (userID).
+			preparedStatement.setString(1,username);
+			// Building a sql result set from the execution of the query statement.
+			ResultSet resultSet = preparedStatement.executeQuery();
+			// Initializing a new Reimbursement array list  to house and return with the data from the database.
+			ArrayList<Users> users = new ArrayList<Users>();
+			users = getAllUsers();
+			for(Users user : users) {
+				if (username.equals(user.getUserName())) {
+					return user;
+				}
 			}
-			//return the list of reimbursements that have the matching author (user) id.
-			return user;
+			return null;
+			// This while loop will continue to add reimbursements to the list
+			// Until all the data from the result set has run out.
+//			while (resultSet.next()) {
+//				// Adding reimbursements to the list with the data extracted from the database.
+//				user.setUserName(resultSet.getString("username"));
+////				user.add(resultSet.getInt("id"), resultSet.getString("username")
+////						,resultSet.getString("password"), Roles.valueOf(resultSet.getString("role")));
+//			}
+//			//return the list of reimbursements that have the matching author (user) id.
+//			return user;
 			
 			
 		}catch (SQLException e) {
@@ -126,13 +174,38 @@ public class UserDAO {
 		}
 		return null;
 	}
-	public static int create(Users userToBeSubmitted) {
+	public static void create(Users userToBeSubmitted) {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("create a password.");
+		String password = scan.next();
+		userToBeSubmitted.setPassword(password);
+		
+		boolean roles = false;
+		System.out.println("What is the role?");
+		String role = scan.next();
+		while(roles == false) {
+		if (role.equals("Manager")) {
+			userToBeSubmitted.setRole(Roles.Manager);
+			roles = true;
+		}
+		else if(role.equals("Employee")) {
+			userToBeSubmitted.setRole(Roles.Employee);
+			roles = true;
+		}
+		else {
+			System.out.println("Please enter Manager or Employee");	
+		}
+		}
+		ArrayList<Users> users = new ArrayList<Users>();
+		users = getAllUsers();
+		int userid = users.size() + 1;
+		userToBeSubmitted.setID(userid);
 		//try catch block to catch sql exception that can be thrown with connection.
 		try (Connection connection = ConnectionFactory.getConnection()){
 			//writing out the relatively complex sql insert string to create a new record.
 			//we explicit ask the database to return the new id after entry.
 			String sql = "INSERT INTO ers_users (id, username, password, role)"+
-			"VALUES (?,?,?, ?::role)"
+			"VALUES (?,?,?,?)"
 			+"RETURNING ers_users.id";
 			//We must use a Prepared Statement because we have parameters.
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -141,7 +214,7 @@ public class UserDAO {
 			preparedStatement.setInt(1, userToBeSubmitted.getID());
 			preparedStatement.setObject(2, userToBeSubmitted.getUserName());
 			preparedStatement.setObject(3, userToBeSubmitted.getPassword());
-			preparedStatement.setObject(4, userToBeSubmitted.getRole());
+			preparedStatement.setObject(4, userToBeSubmitted.getRole().toString());
 		
 			//We need to use the result  set to retrieve the newly generated ID after entry of the new record
 			ResultSet resultSet;
@@ -150,13 +223,13 @@ public class UserDAO {
 				//must call this to get returned reimbursement record id
 				resultSet.next();
 				//finally returning new id.
-				return resultSet.getInt(1);
+				
 			}	
 		} catch (SQLException e) {
 			System.out.println("Creating user has failed.");
 			e.printStackTrace();
 		}
-		return 0;	
+			
 		
 	}
 }

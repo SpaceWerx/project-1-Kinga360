@@ -13,8 +13,12 @@ import DAO.UserDAO;
 public class ReimbursementService {
 	//Instantiating the DAO and user services to utilize in various methods
 	static ReimbursementDAO reimbursementDAO = new ReimbursementDAO();
-	UserDAO userService = new UserDAO();
+	static UserDAO userService = new UserDAO();
 	
+	public static ArrayList<Reimbursement>getALLReimbursement(){
+		ArrayList<Reimbursement> temp = reimbursementDAO.getAllReimbursemnts();
+		return temp;
+	}
 	/**
 	 * This method is meant to return a list of reimbursement records from the database that they have a status of pending.
 	 */
@@ -45,7 +49,7 @@ public class ReimbursementService {
 	 * The submission author must be an employee
 	 * The method will return the new positive integer ID
 	 */
-	public int submitReimbursement (Reimbursement reimbursementToBeSubmitted) {
+	public void submitReimbursement (Reimbursement reimbursementToBeSubmitted) {
 		//Getting the user information from the author ID attached to the reimbursement submission
 		Users employee = userService.getUserById(reimbursementToBeSubmitted.getAuthor());
 		
@@ -56,9 +60,9 @@ public class ReimbursementService {
 		}
 		else {
 			// Setting the status as pending by default and calling the service create method 
-			reimbursementToBeSubmitted.setStatus(Status.Pending);
+			reimbursementDAO.create(reimbursementToBeSubmitted);
 			//Returning the new Int ID from the create method
-			return reimbursementDAO.create(reimbursementToBeSubmitted);
+			//return reimbursementDAO.create(reimbursementToBeSubmitted);
 		}
 	}
 	/**
@@ -66,9 +70,10 @@ public class ReimbursementService {
 	 * It is meant to update the respective fields and ensure the user has a manager role
 	 * The full reimbursement will be returned with the update fields
 	 */
-	public Reimbursement update(Reimbursement unprocessedReimbursement, int resolverID, Status updataStatus) {
+	public static Reimbursement update(Reimbursement unprocessedReimbursement, int resolverID, Status updataStatus) {
 		//Getting the user information from the resolver ID passed in
 		Users manager = userService.getUserById(resolverID);
+		
 		//Checking if the user is a manager
 		if(manager.getRole() != Roles.Manager) {
 			//Throwing an exception if the user is not manager
@@ -77,16 +82,17 @@ public class ReimbursementService {
 			//Setting the respective fields with the passed in data
 			unprocessedReimbursement.setResolver(resolverID);
 			unprocessedReimbursement.setStatus(updataStatus);
+			Reimbursement temp = reimbursementDAO.update(unprocessedReimbursement);
 			//Returning the reimbursement with updated fields
-			return unprocessedReimbursement;
+			return temp;
 		}
 	}
 	//This method is meant to retrieve a single record with the passed-in ID
-	public Reimbursement getReimbursementByID(int ID) {return reimbursementDAO.getReimbursementById(ID);}
+	public static Reimbursement getReimbursementByID(int ID) {return reimbursementDAO.getReimbursementById(ID);}
 	/**
 	 * This method should retrieve all reimbursement records that are associated with the userID provided
 	 */
-	public List<Reimbursement> getReimbursementByAuthor(int userID){
+	public static List<Reimbursement> getReimbursementByAuthor(int userID){
 		return reimbursementDAO.getReimbursementByUser(userID);
 	}
 	public static List<Reimbursement> getPendingReimbursements() {
