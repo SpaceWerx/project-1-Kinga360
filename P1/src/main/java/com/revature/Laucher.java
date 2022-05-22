@@ -35,6 +35,10 @@ public class Laucher {
 		
 		app.get("/Reimbursement", rc.getReimbursementHandler);
 		app.post("/Reimbursement", rc.insertReimbursementHandler);
+		app.get("/getReimbursementByID",rc.getByID);
+		app.get("/getReimbursementByStatus",rc.getByStatus);
+		app.get("/getReimbursementByAuthor",rc.getByAuthor);
+		app.get("/Process",rc.Process);
 		//app.post("/Login", null);
 		}
 	} 
