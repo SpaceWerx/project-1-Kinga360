@@ -2,6 +2,7 @@ package com.revature;
 import Models.*;
 import Service.*;
 import Utilities.ConnectionFactory;
+import controller.AuthController;
 import controller.ReimbursementController;
 import controller.UserController;
 import io.javalin.Javalin;
@@ -14,6 +15,7 @@ public class Laucher {
 	public static void main(String[] args) {
 		UserController userController = new UserController();
 		ReimbursementController rc = new ReimbursementController();
+		AuthController ac = new AuthController();
 		try (Connection conn = ConnectionFactory.getConnection()){
 			System.out.println("Connection is successful");
 			//CLI_Menu_Service driver = new CLI_Menu_Service();
@@ -39,7 +41,10 @@ public class Laucher {
 		app.get("/getReimbursementByStatus",rc.getByStatus);
 		app.get("/getReimbursementByAuthor",rc.getByAuthor);
 		app.get("/Process",rc.Process);
-		//app.post("/Login", null);
+		app.get("/getUserByUsername", userController.getByUsername);
+		app.get("/getUserByID", userController.getUserByID);
+		app.post("/postNewUser", ac.insertUserHandler);
+		app.post("/login", ac.insertLogin);
 		}
 	} 
 

@@ -20,6 +20,8 @@ import Utilities.ConnectionFactory;
 public class UserDAO {
 	private static MockUserData mockData = new MockUserData();
 	private static  ArrayList<Users> users = new ArrayList<Users>();
+	
+		
 	public static void getData() {
 		if (users.isEmpty()) {
 		

@@ -2,42 +2,42 @@ package controller;
 
 import java.util.Objects;
 
+import com.google.gson.Gson;
+
+import DAO.UserDAO;
+import Models.Reimbursement;
 import Models.Users;
 import Service.AuthService;
 import io.javalin.http.Context;
+import io.javalin.http.Handler;
 import io.javalin.http.HttpCode;
 
 public class AuthController{
-	public void handleRegisterMethod(Context ctx) {
-	try {
-		//Storing the json body as a string
-		String input = ctx.body();
-		//Instantiating and using the object mapper
-		//This will parse the input string to a user object and store it to a local variable
-		ObjectManager mapper = new ObjectMapper();
-		Users user = mapper.readValue(input, Users.class);
-		
-		// Once the user object is created, storing the integer ID from the user service method.
-		int id = AuthService.register(user);
-		//if id is still 0, the registration was unsuccessful.
-		if (id ==0) {
-			//Telling the client that registration has failed.
-			ctx.status(HttpCode.INTERNAL_SERVER_ERROR);
-			ctx.result("Registration unsuccessful");
-		}else {
-			//Proclaiming successful creation of new user
-			ctx.status(HttpCode.CREATED);
-			ctx.result("Registration succesful");
-		}
-	}catch (Exception e) {
-		ctx.status(HttpCode.INTERNAL_SERVER_ERROR);
-		if (!e.getMessage().isEmpty()) {
-			ctx.result(e.getMessage());
-		}
-		e.printStackTrace();
-	}
+	public Handler insertUserHandler = (ctx) ->{
+			String body = ctx.body();
+			Gson gson = new Gson();
+			Users user = gson.fromJson(body, Users.class);
+			UserDAO uDAO = new UserDAO();
+			UserDAO.create(user);
+			ctx.result("User successfully added.");
+			ctx.status(212);
+		};
+		public Handler insertLogin = (ctx) ->{
+			
+			String body = ctx.body();
+			Gson gson = new Gson();
+			Users user = gson.fromJson(body, Users.class);
+			Users temp = AuthService.login(user.getUserName(), user.getPassword());
+			if (temp == null) {
+				ctx.result("username or password incorrect");
+				ctx.status(401);	
+			}
+			else {
+			ctx.result("Username: " + temp.getUserName() + " ID: " + temp.getID() + " Role: " +temp.getRole());
+			ctx.status(217);
+			}
+		};
 	
-	}
 	public void handleLogin(Context ctx) {
 		//Reading the form parameters from the http request with the respective string keys.
 		//Storing the form parameters in local variables
