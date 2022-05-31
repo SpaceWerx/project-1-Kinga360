@@ -19,11 +19,10 @@ public class UserService {
 	// returns the user name
 	public Users getUserName(String name) {
 		getData();
-		users = UserDAO.getAllUsers();
-		for (Users user: users) {
-			if (user.getUserName() == name) {
-				return user;
-			}
+		Users temp = new Users();
+		temp = UserDAO.getUserByUsernames(name);
+		if (temp != null) {
+			return temp;
 		}
 		return null;
 		}

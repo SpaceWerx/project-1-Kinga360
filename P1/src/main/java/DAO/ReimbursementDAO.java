@@ -242,6 +242,7 @@ public class ReimbursementDAO {
 			preparedStatement.setInt(2, reimbursementToBeSubmitted.getAuthor());
 			preparedStatement.setInt(3, reimbursementToBeSubmitted.getResolver());
 			preparedStatement.setObject(4, reimbursementToBeSubmitted.getDescription());
+			System.out.println( reimbursementToBeSubmitted.getDescription());
 			preparedStatement.setObject(5, reimbursementToBeSubmitted.getType().name());
 			preparedStatement.setObject(6, reimbursementToBeSubmitted.getStatus().name());
 			preparedStatement.setObject(7, reimbursementToBeSubmitted.getAmount());

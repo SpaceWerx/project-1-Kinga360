@@ -12,7 +12,6 @@ public class Reimbursement {
 	private Type type;
 	private Status status;
 	private double amount;
-	private static MockReimbursementData mockData = new MockReimbursementData();
 	public static List<Reimbursement> getData() {
 		List<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
 		//mockData.mockData();

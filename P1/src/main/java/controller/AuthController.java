@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 import DAO.UserDAO;
 import Models.Reimbursement;
+import Models.Roles;
 import Models.Users;
 import Service.AuthService;
 import io.javalin.http.Context;
@@ -32,9 +33,18 @@ public class AuthController{
 				ctx.result("username or password incorrect");
 				ctx.status(401);	
 			}
-			else {
+			else if (temp.getRole().equals(Roles.Employee)) {
+				
 			ctx.result("Username: " + temp.getUserName() + " ID: " + temp.getID() + " Role: " +temp.getRole());
 			ctx.status(217);
+			}
+			else if (temp.getRole().equals(Roles.Manager)){
+				ctx.result("Username: " + temp.getUserName() + " ID: " + temp.getID() + " Role: " +temp.getRole());
+				ctx.status(218);
+			}
+			else {
+				ctx.result("Incorrect username or password.");
+				ctx.status(305);
 			}
 		};
 	
@@ -60,9 +70,11 @@ public class AuthController{
 				ctx.header("Access-Control-Expose-Header","Current User");
 				ctx.header("Current-User",""+user.getID());
 				ctx.result(user.getRole().toString());
+				ctx.status(260);
 			}else {
 				ctx.status(HttpCode.BAD_REQUEST);
 				ctx.result("Invalid Creditionals");
+				ctx.status(300);
 			}
 		}
 	}

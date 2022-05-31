@@ -36,12 +36,14 @@ public class Laucher {
 		app.post("/User",userController.insertUsersHandler);
 		
 		app.get("/Reimbursement", rc.getReimbursementHandler);
-		app.post("/Reimbursement", rc.insertReimbursementHandler);
-		app.get("/getReimbursementByID",rc.getByID);
-		app.get("/getReimbursementByStatus",rc.getByStatus);
+		app.post("/reimbursement", rc.insertReimbursementHandler);
+		app.post("/getReimbursementByID",rc.getByID);
+		app.post("/getReimbursementByUserName", rc.getReimbursementByUsername);
+		app.post("/getReimbursementByStatus",rc.getByStatus);
 		app.get("/getReimbursementByAuthor",rc.getByAuthor);
-		app.get("/Process",rc.Process);
-		app.get("/getUserByUsername", userController.getByUsername);
+		app.post("/Process",rc.Approve);
+		app.post("/processDeny", rc.Denied);
+		app.post("/getUserByUsername", userController.getByUsername);
 		app.get("/getUserByID", userController.getUserByID);
 		app.post("/postNewUser", ac.insertUserHandler);
 		app.post("/login", ac.insertLogin);

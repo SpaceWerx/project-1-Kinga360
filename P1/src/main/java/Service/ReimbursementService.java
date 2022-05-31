@@ -70,7 +70,7 @@ public class ReimbursementService {
 	 * It is meant to update the respective fields and ensure the user has a manager role
 	 * The full reimbursement will be returned with the update fields
 	 */
-	public static Reimbursement update(Reimbursement unprocessedReimbursement, int resolverID, Status updataStatus) {
+	public static Reimbursement update(Reimbursement unprocessedReimbursement, int resolverID, Status status) {
 		//Getting the user information from the resolver ID passed in
 		Users manager = userService.getUserById(resolverID);
 		
@@ -81,7 +81,7 @@ public class ReimbursementService {
 		}else {
 			//Setting the respective fields with the passed in data
 			unprocessedReimbursement.setResolver(resolverID);
-			unprocessedReimbursement.setStatus(updataStatus);
+			unprocessedReimbursement.setStatus(status);
 			Reimbursement temp = reimbursementDAO.update(unprocessedReimbursement);
 			//Returning the reimbursement with updated fields
 			return temp;

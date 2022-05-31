@@ -47,7 +47,7 @@ public class UserDAO {
 	public String toString() {
 		return "UserDAO []";
 	}
-	public static String getUserByUsername(String username){
+	public static Users getUserByUsername(String username){
 		// Try-catch block to catch sql exception that can be thrown with connection.
 		try (Connection connection = ConnectionFactory.getConnection()){
 			//SQL statement prepared as a string.

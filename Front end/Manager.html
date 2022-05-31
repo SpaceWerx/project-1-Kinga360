@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="display">
+        <h2 id = "display-title">Manager Portal</h2>
+        <div id ="display-buttons">
+            <button class="btn btn-outline-dark">
+                <a id="process-button-anchor">
+                    process reimbursement
+                </a>
+            </button>
+            <button class="btn btn-outline-dark">
+                <a id="view-all-pending-button-anchor">
+                    view all pending reimbursements
+                </a>
+            </button>
+            <button class="btn btn-outline-dark">
+                <a id="view-all-resolved-button-anchor">
+                    view all resolved reimbursements
+                </a>
+            </button>            
+        </div>
+        <table id="display-table" class="table table-striped">
+            <thread>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thread>
+        </table>
+</body>
+<script src="Manager.js"></script>
+</html>

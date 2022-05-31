@@ -9,6 +9,7 @@ import DAO.UserDAO;
 import Models.Reimbursement;
 import Models.Status;
 import Models.Users;
+import Service.AuthService;
 import Service.ReimbursementService;
 import io.javalin.http.Handler;
 
@@ -25,9 +26,11 @@ public class ReimbursementController {
 	};
 	public Handler insertReimbursementHandler = (ctx) ->{
 		String body = ctx.body();
+		System.out.println(body);
 		Gson gson = new Gson();
 		Reimbursement reimbursement = gson.fromJson(body, Reimbursement.class);
-		rDAO.create(reimbursement);
+		System.out.println(reimbursement.getDescription());
+		rs.submitReimbursement(reimbursement);
 		ctx.result("Reimbursement successfully added.");
 		ctx.status(203);
 	};
@@ -64,15 +67,43 @@ public class ReimbursementController {
 		ctx.result(JSONObject);
 		ctx.status(207);
 	};
-	public Handler Process  = (ctx) ->{
+	public Handler Approve  = (ctx) ->{
 
 			String body = ctx.body();
 			Gson gson = new Gson();
 			Reimbursement reimbursement = gson.fromJson(body, Reimbursement.class);
-			ReimbursementService.update(reimbursement, reimbursement.getResolver(), reimbursement.getStatus());
+			Reimbursement temp = ReimbursementService.getReimbursementByID(reimbursement.getID());
+			temp.setStatus(Status.Approved);
+			temp.setResolver(reimbursement.getResolver());
+			ReimbursementService.update(temp, temp.getResolver(), temp.getStatus());
 			String JSONObject = gson.toJson("Reimbursement processed successfully");
 			ctx.result(JSONObject);
-			ctx.status(208);
+			ctx.status(237);
 	};
-	
+	public Handler Denied  = (ctx) ->{
+
+		String body = ctx.body();
+		Gson gson = new Gson();
+		Reimbursement reimbursement = gson.fromJson(body, Reimbursement.class);
+		Reimbursement temp = ReimbursementService.getReimbursementByID(reimbursement.getID());
+		temp.setStatus(Status.Denied);
+		temp.setResolver(reimbursement.getResolver());
+		ReimbursementService.update(temp, temp.getResolver(), temp.getStatus());
+		String JSONObject = gson.toJson("Reimbursement processed successfully");
+		ctx.result(JSONObject);
+		ctx.status(238);
+};
+	public Handler getReimbursementByUsername = (ctx) ->{
+
+		String body = ctx.body();
+		Gson gson = new Gson();
+		Users  user = gson.fromJson(body, Users.class);
+		Users temp = AuthService.login(user.getUserName(), user.getPassword());
+		int ID = temp.getID();
+		List<Reimbursement> r =rDAO.getReimbursementByUser(ID) ;
+		String JSONObject = gson.toJson(r);
+		ctx.result(JSONObject);
+		ctx.status(240);
+	};
+
 }

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="display">
+        <h2 id = "display-title">Process Portal</h2>
+        <div id ="display-buttons">
+            <button class="btn btn-outline-dark">
+                <a id="process-button-anchor">
+                    process reimbursement
+                </a>
+            </button>
+                <button class="btn btn-outline-dark">
+                    <a id="view-all-pending-button-anchor">
+                        view all pending reimbursements
+                    </a>
+                </button>
+                <button class="btn btn-outline-dark">
+                    <a id="back-button-anchor">
+                        back
+                    </a>
+                </button>
+                <label class="input-group-text" for="typeInput">Status</label>
+                <select class="form-select" id ="typeInput">
+                    <option selected>Choose...</option>
+                    <option value="Approve">Approve</option>
+                    <option value="Deny">Deny</option>
+                </select>
+     </div>
+     <div class ="input-group mb-3">
+        <span class="input-group-text">Reimbursement ID</span> 
+        <input type="text" class="form-control" id="ID" placeholder="Reimbursement ID" >
+        <div class ="input-group mb-3">
+            <span class="input-group-text">User ID</span> 
+            <input type="text" class="form-control" id="UserID" placeholder="User ID" >
+    </div>
+    </div>
+    <table id="display-table" class="table table-striped">
+        <thread>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Type</th>
+                <th scope="col">Description</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thread>
+    </table>
+</body>
+<script src="process.js"></script>
+</html>
